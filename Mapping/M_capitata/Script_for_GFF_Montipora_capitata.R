@@ -1,4 +1,4 @@
-#Script for adding transcript and gene id into GFF file for alignment. Modified from: https://github.com/AHuffmyer/larval_symbiont_TPC/blob/main/scripts/bioinformatics/fix_gff_format.Rmd  
+#Script for adding transcript and gene id into GFF file for alignment. Modified from the work of Dr. Ariana S. Huffmyer (https://github.com/AHuffmyer/larval_symbiont_TPC/blob/main/scripts/bioinformatics/fix_gff_format.Rmd)  
 
 #Here, I'll be adding transcript_id= and gene_id= to 'gene' column because we needs that label to map our RNAseq data  
 
