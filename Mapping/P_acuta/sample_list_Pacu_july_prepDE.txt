@@ -1,0 +1,9 @@
+SRR3051863 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051863.fastq.gz_cleaned_R1.bam.gtf
+SRR3051864 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051864.fastq.gz_cleaned_R1.bam.gtf
+SRR3051865 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051865.fastq.gz_cleaned_R1.bam.gtf
+SRR3051866 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051866.fastq.gz_cleaned_R1.bam.gtf
+SRR3051867 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051867.fastq.gz_cleaned_R1.bam.gtf
+SRR3051868 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051868.fastq.gz_cleaned_R1.bam.gtf
+SRR3051869 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051869.fastq.gz_cleaned_R1.bam.gtf
+SRR3051870 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051870.fastq.gz_cleaned_R1.bam.gtf
+SRR3051871 /data/putnamlab/Amalia_Murgueitio/P_acuta/Mapping_P_acuta/data/stringtie/bam_july/SRR3051871.fastq.gz_cleaned_R1.bam.gtf
