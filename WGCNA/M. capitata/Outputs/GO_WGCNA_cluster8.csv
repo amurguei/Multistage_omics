@@ -1,0 +1,338 @@
+category,over_represented_pvalue,under_represented_pvalue,numDEInCat,numInCat,term,ontology
+GO:0048598,0.000155415,0.999925928,38,705,embryonic morphogenesis,BP
+GO:0046900,0.000251861,0.999996186,3,5,tetrahydrofolylpolyglutamate metabolic process,BP
+GO:0007391,0.000773142,0.999797833,11,121,dorsal closure,BP
+GO:0016331,0.000889544,0.999656334,19,295,morphogenesis of embryonic epithelium,BP
+GO:0019319,0.001873159,0.999763189,5,32,hexose biosynthetic process,BP
+GO:0003062,0.002193688,0.999979726,2,3,regulation of heart rate by chemical signal,BP
+GO:0035277,0.002443807,0.999770168,4,20,"spiracle morphogenesis, open tracheal system",BP
+GO:0006425,0.003312176,0.999807721,3,11,glutaminyl-tRNA aminoacylation,BP
+GO:1904888,0.003464143,0.999142082,8,88,cranial skeletal system development,BP
+GO:0001700,0.003616925,0.998770976,12,168,embryonic development via the syncytial blastoderm,BP
+GO:0097272,0.004211138,0.999923248,2,4,ammonium homeostasis,BP
+GO:0072583,0.004328946,0.99932425,5,38,clathrin-dependent endocytosis,BP
+GO:1901841,0.004623093,0.999911567,2,4,regulation of high voltage-gated calcium channel activity,BP
+GO:0019749,0.004717508,0.999908811,2,4,"cytoskeleton-dependent cytoplasmic transport, nurse cell to oocyte",BP
+GO:0035213,0.004723719,0.999908628,2,4,clypeo-labral disc development,BP
+GO:0048728,0.004723719,0.999908628,2,4,proboscis development,BP
+GO:0021559,0.004863863,0.99990448,2,4,trigeminal nerve development,BP
+GO:0048488,0.005501677,0.998874083,6,57,synaptic vesicle endocytosis,BP
+GO:0006760,0.006035377,0.999243013,4,26,folic acid-containing compound metabolic process,BP
+GO:0035476,0.007470589,0.999787505,2,5,angioblast cell migration,BP
+GO:0070344,0.007923365,0.999767592,2,5,regulation of fat cell proliferation,BP
+GO:0035279,0.00899968,0.99919253,3,16,miRNA-mediated gene silencing by mRNA destabilization,BP
+GO:0098795,0.00899968,0.99919253,3,16,global gene silencing by mRNA cleavage,BP
+GO:0046364,0.009798973,0.99811265,5,46,monosaccharide biosynthetic process,BP
+GO:0036465,0.009808309,0.997718589,6,64,synaptic vesicle recycling,BP
+GO:0033144,0.009989792,0.998535311,4,29,negative regulation of intracellular steroid hormone receptor signaling pathway,BP
+GO:0006094,0.010635003,0.998402734,4,31,gluconeogenesis,BP
+GO:1902514,0.010844148,0.999592748,2,6,regulation of calcium ion transmembrane transport via high voltage-gated calcium channel,BP
+GO:0090305,0.011302019,0.99515998,14,246,nucleic acid phosphodiester bond hydrolysis,BP
+GO:0110011,0.011593711,0.99954902,2,6,regulation of basement membrane organization,BP
+GO:0090501,0.012095421,0.995943527,9,130,RNA phosphodiester bond hydrolysis,BP
+GO:0045500,0.012125325,0.999517069,2,6,sevenless signaling pathway,BP
+GO:0030048,0.012524657,0.996486765,7,87,actin filament-based movement,BP
+GO:0061951,0.012650015,0.997990857,4,33,establishment of protein localization to plasma membrane,BP
+GO:0010717,0.0130876,0.997282273,5,49,regulation of epithelial to mesenchymal transition,BP
+GO:0043123,0.013938379,0.996487643,6,70,positive regulation of I-kappaB kinase/NF-kappaB signaling,BP
+GO:0032790,0.014754077,0.999312718,2,7,ribosome disassembly,BP
+GO:0003404,0.014991959,0.9992957,2,7,optic vesicle morphogenesis,BP
+GO:0046503,0.015167038,0.997458178,4,33,glycerolipid catabolic process,BP
+GO:0006835,0.015287758,0.996692325,5,51,dicarboxylic acid transport,BP
+GO:0061029,0.016292224,0.999200116,2,7,eyelid development in camera-type eye,BP
+GO:0035331,0.016325694,0.998120015,3,20,negative regulation of hippo signaling,BP
+GO:0032482,0.017300988,0.996971389,4,35,Rab protein signal transduction,BP
+GO:0016358,0.017739792,0.992534002,12,210,dendrite development,BP
+GO:0007296,0.018521763,0.997763407,3,20,vitellogenesis,BP
+GO:0034058,0.019149966,0.997658234,3,20,endosomal vesicle fusion,BP
+GO:0006418,0.019494976,0.996449358,4,37,tRNA aminoacylation for protein translation,BP
+GO:0043039,0.019494976,0.996449358,4,37,tRNA aminoacylation,BP
+GO:0090254,0.019594067,0.997583061,3,20,cell elongation involved in imaginal disc-derived wing morphogenesis,BP
+GO:0051764,0.019662842,0.998892984,2,8,actin crosslink formation,BP
+GO:0001843,0.020454055,0.993654307,7,97,neural tube closure,BP
+GO:0016348,0.020532685,0.997408628,3,21,imaginal disc-derived leg joint morphogenesis,BP
+GO:0016189,0.020597862,0.998811233,2,8,synaptic vesicle to endosome fusion,BP
+GO:0033147,0.021060784,0.998769996,2,8,negative regulation of intracellular estrogen receptor signaling pathway,BP
+GO:0048701,0.021090993,0.994155349,6,76,embryonic cranial skeleton morphogenesis,BP
+GO:0045175,0.022218701,0.998664673,2,8,basal protein localization,BP
+GO:0060606,0.022398909,0.992917777,7,99,tube closure,BP
+GO:0010750,0.02362379,1,1,1,positive regulation of nitric oxide mediated signal transduction,BP
+GO:1902261,0.02362379,1,1,1,positive regulation of delayed rectifier potassium channel activity,BP
+GO:1903116,0.02362379,1,1,1,positive regulation of actin filament-based movement,BP
+GO:1903762,0.02362379,1,1,1,positive regulation of voltage-gated potassium channel activity involved in ventricular cardiac muscle cell action potential repolarization,BP
+GO:1903947,0.02362379,1,1,1,positive regulation of ventricular cardiac muscle cell action potential,BP
+GO:1905026,0.02362379,1,1,1,positive regulation of membrane repolarization during ventricular cardiac muscle cell action potential,BP
+GO:1905033,0.02362379,1,1,1,positive regulation of membrane repolarization during cardiac muscle cell action potential,BP
+GO:2000170,0.02362379,1,1,1,positive regulation of peptidyl-cysteine S-nitrosylation,BP
+GO:0006436,0.023784614,1,1,1,tryptophanyl-tRNA aminoacylation,BP
+GO:0052548,0.023845439,0.989971324,11,193,regulation of endopeptidase activity,BP
+GO:0043603,0.024086003,0.985862928,26,601,cellular amide metabolic process,BP
+GO:1905954,0.024168845,0.993086633,6,78,positive regulation of lipid localization,BP
+GO:1905114,0.024478552,0.989209893,12,220,cell surface receptor signaling pathway involved in cell-cell signaling,BP
+GO:0009653,0.024636926,0.981982139,74,2065,anatomical structure morphogenesis,BP
+GO:0007480,0.024651089,0.992917002,6,78,imaginal disc-derived leg morphogenesis,BP
+GO:1901385,0.024785974,0.998377044,2,9,regulation of voltage-gated calcium channel activity,BP
+GO:0048845,0.024836878,0.998371918,2,9,venous blood vessel morphogenesis,BP
+GO:0014020,0.025036777,0.991897412,7,101,primary neural tube formation,BP
+GO:0009249,0.025505091,0.998304093,2,9,protein lipoylation,BP
+GO:0002468,0.025857986,1,1,1,dendritic cell antigen processing and presentation,BP
+GO:0007465,0.026093454,0.998243555,2,9,R7 cell fate commitment,BP
+GO:0007478,0.026093937,0.992401197,6,79,leg disc morphogenesis,BP
+GO:0099532,0.026214584,0.998230997,2,9,synaptic vesicle endosomal processing,BP
+GO:2000286,0.026533258,0.998197806,2,9,receptor internalization involved in canonical Wnt signaling pathway,BP
+GO:0006620,0.026669524,0.998183546,2,9,post-translational protein targeting to endoplasmic reticulum membrane,BP
+GO:0003409,0.026894808,1,1,1,optic cup structural organization,BP
+GO:0021622,0.026894808,1,1,1,oculomotor nerve morphogenesis,BP
+GO:0021623,0.026894808,1,1,1,oculomotor nerve formation,BP
+GO:0060598,0.026894808,1,1,1,dichotomous subdivision of terminal units involved in mammary gland duct morphogenesis,BP
+GO:0097273,0.026894808,1,1,1,creatinine homeostasis,BP
+GO:0097275,0.026894808,1,1,1,cellular ammonium homeostasis,BP
+GO:0097276,0.026894808,1,1,1,cellular creatinine homeostasis,BP
+GO:0097277,0.026894808,1,1,1,cellular urea homeostasis,BP
+GO:0006071,0.026913737,0.998157889,2,9,glycerol metabolic process,BP
+GO:0001980,0.027204889,1,1,1,regulation of systemic arterial blood pressure by ischemic conditions,BP
+GO:0002014,0.027204889,1,1,1,vasoconstriction of artery involved in ischemic response to lowering of systemic arterial blood pressure,BP
+GO:0034331,0.027363964,0.996112233,3,23,cell junction maintenance,BP
+GO:0032940,0.027408133,0.983234538,29,695,secretion by cell,BP
+GO:0006429,0.027516658,1,1,1,leucyl-tRNA aminoacylation,BP
+GO:0043038,0.027549128,0.99439048,4,41,amino acid activation,BP
+GO:0002009,0.027965932,0.982433041,32,784,morphogenesis of an epithelium,BP
+GO:1902465,0.028071531,1,1,1,negative regulation of histone H3-K27 trimethylation,BP
+GO:1990248,0.028071531,1,1,1,regulation of transcription from RNA polymerase II promoter in response to DNA damage,BP
+GO:0001955,0.028102776,1,1,1,blood vessel maturation,BP
+GO:0099560,0.028322579,1,1,1,synaptic membrane adhesion,BP
+GO:0046594,0.028356505,1,1,1,maintenance of pole plasm mRNA location,BP
+GO:1900169,0.02860757,1,1,1,regulation of glucocorticoid mediated signaling pathway,BP
+GO:1900170,0.02860757,1,1,1,negative regulation of glucocorticoid mediated signaling pathway,BP
+GO:1902211,0.02860757,1,1,1,regulation of prolactin signaling pathway,BP
+GO:1902213,0.02860757,1,1,1,positive regulation of prolactin signaling pathway,BP
+GO:0031426,0.028736851,1,1,1,polycistronic mRNA processing,BP
+GO:0072684,0.028736851,1,1,1,"mitochondrial tRNA 3'-trailer cleavage, endonucleolytic",BP
+GO:0140040,0.028736851,1,1,1,mitochondrial polycistronic RNA processing,BP
+GO:1902375,0.028736851,1,1,1,"nuclear tRNA 3'-trailer cleavage, endonucleolytic",BP
+GO:0019428,0.028815019,1,1,1,allantoin biosynthetic process,BP
+GO:0019628,0.028815019,1,1,1,urate catabolic process,BP
+GO:0061199,0.028987853,1,1,1,striated muscle contraction involved in embryonic body morphogenesis,BP
+GO:0086016,0.028987853,1,1,1,AV node cell action potential,BP
+GO:0086027,0.028987853,1,1,1,AV node cell to bundle of His cell signaling,BP
+GO:0086045,0.028987853,1,1,1,membrane depolarization during AV node cell action potential,BP
+GO:0086067,0.028987853,1,1,1,AV node cell to bundle of His cell communication,BP
+GO:0098912,0.028987853,1,1,1,membrane depolarization during atrial cardiac muscle cell action potential,BP
+GO:0003324,0.029205833,1,1,1,pancreatic D cell development,BP
+GO:0032650,0.029205833,1,1,1,regulation of interleukin-1 alpha production,BP
+GO:0032730,0.029205833,1,1,1,positive regulation of interleukin-1 alpha production,BP
+GO:0071655,0.029205833,1,1,1,regulation of granulocyte colony-stimulating factor production,BP
+GO:0071657,0.029205833,1,1,1,positive regulation of granulocyte colony-stimulating factor production,BP
+GO:1901258,0.029205833,1,1,1,positive regulation of macrophage colony-stimulating factor production,BP
+GO:0009107,0.029358856,1,1,1,lipoate biosynthetic process,BP
+GO:0016260,0.02945908,1,1,1,selenocysteine biosynthetic process,BP
+GO:0090122,0.029848525,1,1,1,cholesterol ester hydrolysis involved in cholesterol transport,BP
+GO:0018008,0.029875597,1,1,1,N-terminal peptidyl-glycine N-myristoylation,BP
+GO:0046901,0.02987668,1,1,1,tetrahydrofolylpolyglutamate biosynthetic process,BP
+GO:0016095,0.029936229,1,1,1,polyprenol catabolic process,BP
+GO:0035498,0.030011272,1,1,1,carnosine metabolic process,BP
+GO:0061853,0.030296005,1,1,1,regulation of neuroblast migration,BP
+GO:2000746,0.030296005,1,1,1,regulation of defecation rhythm,BP
+GO:0009236,0.030310411,1,1,1,cobalamin biosynthetic process,BP
+GO:0042558,0.030355285,0.993631285,4,41,pteridine-containing compound metabolic process,BP
+GO:0035260,0.030515964,1,1,1,internal genitalia morphogenesis,BP
+GO:2000834,0.030515964,1,1,1,regulation of androgen secretion,BP
+GO:2000836,0.030515964,1,1,1,positive regulation of androgen secretion,BP
+GO:0030026,0.030614905,1,1,1,cellular manganese ion homeostasis,BP
+GO:0032468,0.030614905,1,1,1,Golgi calcium ion homeostasis,BP
+GO:0006043,0.030672097,1,1,1,glucosamine catabolic process,BP
+GO:0046370,0.030672097,1,1,1,fructose biosynthetic process,BP
+GO:0010718,0.030700273,0.995423121,3,24,positive regulation of epithelial to mesenchymal transition,BP
+GO:1904693,0.030791848,1,1,1,midbrain morphogenesis,BP
+GO:0032447,0.030832837,1,1,1,protein urmylation,BP
+GO:0098822,0.030832837,1,1,1,peptidyl-cysteine modification to L-cysteine persulfide,BP
+GO:0016482,0.030843118,0.988640332,8,128,cytosolic transport,BP
+GO:0034661,0.032424504,0.995045718,3,25,ncRNA catabolic process,BP
+GO:0010506,0.032524572,0.984032074,14,280,regulation of autophagy,BP
+GO:0035148,0.032716777,0.985540983,11,205,tube formation,BP
+GO:0048813,0.032762177,0.986184401,10,179,dendrite morphogenesis,BP
+GO:0030326,0.032803438,0.988755546,7,107,embryonic limb morphogenesis,BP
+GO:0071896,0.032891397,0.997438336,2,10,protein localization to adherens junction,BP
+GO:0007349,0.032927207,0.989866387,6,83,cellularization,BP
+GO:0019400,0.033108968,0.997412145,2,10,alditol metabolic process,BP
+GO:0015800,0.033554953,0.99480428,3,25,acidic amino acid transport,BP
+GO:0007416,0.034244236,0.989356039,6,85,synapse assembly,BP
+GO:0061635,0.034553716,0.994588195,3,25,regulation of protein complex stability,BP
+GO:0043122,0.035083527,0.989029224,6,86,regulation of I-kappaB kinase/NF-kappaB signaling,BP
+GO:0048841,0.035108555,0.994467046,3,25,regulation of axon extension involved in axon guidance,BP
+GO:0032989,0.035355086,0.976747479,36,919,cellular component morphogenesis,BP
+GO:0000466,0.035393507,0.99438708,3,26,"maturation of 5.8S rRNA from tricistronic rRNA transcript (SSU-rRNA, 5.8S rRNA, LSU-rRNA)",BP
+GO:0046887,0.035765007,0.986438834,8,132,positive regulation of hormone secretion,BP
+GO:0016051,0.036569212,0.988453085,6,86,carbohydrate biosynthetic process,BP
+GO:0035113,0.037314011,0.98684831,7,110,embryonic appendage morphogenesis,BP
+GO:0006991,0.037463126,0.996816561,2,11,response to sterol depletion,BP
+GO:0032933,0.037463126,0.996816561,2,11,SREBP signaling pathway,BP
+GO:0071501,0.037463126,0.996816561,2,11,cellular response to sterol depletion,BP
+GO:0018108,0.037813603,0.986634663,7,110,peptidyl-tyrosine phosphorylation,BP
+GO:0060338,0.038017357,0.996743469,2,11,regulation of type I interferon-mediated signaling pathway,BP
+GO:0016055,0.038233706,0.983450003,10,183,Wnt signaling pathway,BP
+GO:0048736,0.038324379,0.979333425,17,369,appendage development,BP
+GO:0035289,0.038459828,0.996684683,2,11,posterior head segmentation,BP
+GO:0005996,0.038500957,0.984191858,9,157,monosaccharide metabolic process,BP
+GO:0034394,0.038521177,0.99368537,3,26,protein localization to cell surface,BP
+GO:0035107,0.038837967,0.979463099,16,342,appendage morphogenesis,BP
+GO:0018212,0.039277541,0.986001565,7,111,peptidyl-tyrosine modification,BP
+GO:0034314,0.039376128,0.996561732,2,11,Arp2/3 complex-mediated actin nucleation,BP
+GO:0043009,0.039515331,0.9765051,23,541,chordate embryonic development,BP
+GO:0036315,0.040037616,0.990794859,4,45,cellular response to sterol,BP
+GO:0072659,0.040170832,0.985614545,7,111,protein localization to plasma membrane,BP
+GO:2001135,0.040971194,0.996295234,2,12,regulation of endocytic recycling,BP
+GO:0009790,0.041281225,0.970952685,48,1295,embryo development,BP
+GO:2000369,0.041287609,0.993025058,3,27,regulation of clathrin-dependent endocytosis,BP
+GO:0019318,0.042347593,0.984659613,7,112,hexose metabolic process,BP
+GO:0045466,0.042447994,0.992750236,3,27,R7 cell differentiation,BP
+GO:0001841,0.042832685,0.984438936,7,114,neural tube formation,BP
+GO:0071447,0.043128522,0.995988903,2,12,cellular response to hydroperoxide,BP
+GO:0000902,0.043335048,0.971960629,31,784,cell morphogenesis,BP
+GO:0060841,0.04342053,0.995946757,2,12,venous blood vessel development,BP
+GO:0006399,0.043666023,0.982772422,8,137,tRNA metabolic process,BP
+GO:0097154,0.043886909,0.995879111,2,12,GABAergic neuron differentiation,BP
+GO:0032988,0.043897828,0.995877522,2,12,ribonucleoprotein complex disassembly,BP
+GO:0060562,0.044297087,0.972746516,25,609,epithelial tube morphogenesis,BP
+GO:0010508,0.044332849,0.983774486,7,114,positive regulation of autophagy,BP
+GO:0198738,0.044715852,0.980114308,10,188,cell-cell signaling by wnt,BP
+GO:2000116,0.044732287,0.98226488,8,138,regulation of cysteine-type endopeptidase activity,BP
+GO:0003381,0.045478472,0.995645185,2,12,epithelial cell morphogenesis involved in gastrulation,BP
+GO:0003384,0.045478472,0.995645185,2,12,apical constriction involved in gastrulation,BP
+GO:0008363,0.045774428,0.991924229,3,28,larval chitin-based cuticle development,BP
+GO:0042337,0.045774428,0.991924229,3,28,cuticle development involved in chitin-based cuticle molting cycle,BP
+GO:1902414,0.046133679,0.995547511,2,12,protein localization to cell junction,BP
+GO:0034332,0.046695486,0.986308505,5,68,adherens junction organization,BP
+GO:0021506,0.047275229,0.999428614,1,2,anterior neuropore closure,BP
+GO:0021995,0.047275229,0.999428614,1,2,neuropore closure,BP
+GO:0046903,0.047429907,0.969065441,31,790,secretion,BP
+GO:0046128,0.047560393,0.985977711,5,69,purine ribonucleoside metabolic process,BP
+GO:0035026,0.04790373,0.995279684,2,12,leading edge cell differentiation,BP
+GO:0035137,0.048409623,0.991246238,3,29,hindlimb morphogenesis,BP
+GO:2001233,0.048608789,0.974765539,14,298,regulation of apoptotic signaling pathway,BP
+GO:0030589,0.048631242,0.99516794,2,12,pseudocleavage involved in syncytial blastoderm formation,BP
+GO:0007485,0.048739012,0.991162847,3,29,imaginal disc-derived male genitalia development,BP
+GO:0045216,0.048749244,0.980331246,8,141,cell-cell junction organization,BP
+GO:0060037,0.048763277,0.991156694,3,29,pharyngeal system development,BP
+GO:0052547,0.049016621,0.976878188,11,217,regulation of peptidase activity,BP
+GO:0002190,0.049319615,0.999377466,1,2,cap-independent translational initiation,BP
+GO:0002192,0.049319615,0.999377466,1,2,IRES-dependent translational initiation of linear mRNA,BP
+GO:0110017,0.049319615,0.999377466,1,2,cap-independent translational initiation of linear mRNA,BP
+GO:0099050,0.049658017,0.999368783,1,2,vesicle scission,BP
+GO:0006518,0.049985326,0.971625108,18,412,peptide metabolic process,BP
+GO:0030662,0.000770925,0.999798484,11,121,coated vesicle membrane,CC
+GO:0098686,0.002020942,0.999982093,2,3,hippocampal mossy fiber to CA3 synapse,CC
+GO:0032937,0.002433415,0.999976277,2,3,SREBP-SCAP-Insig complex,CC
+GO:0045172,0.003639405,0.999610005,4,23,germline ring canal,CC
+GO:0031225,0.006672703,0.998575546,6,59,anchored component of membrane,CC
+GO:0046658,0.006827393,0.999109442,4,27,anchored component of plasma membrane,CC
+GO:0090443,0.010291708,0.999623964,2,6,FAR/SIN/STRIPAK complex,CC
+GO:0030135,0.01122488,0.995568857,12,195,coated vesicle,CC
+GO:0035577,0.011535815,0.998225692,4,31,azurophil granule membrane,CC
+GO:0030660,0.012019104,0.997075039,6,66,Golgi-associated vesicle membrane,CC
+GO:0031234,0.014276397,0.99638584,6,69,extrinsic component of cytoplasmic side of plasma membrane,CC
+GO:0032588,0.014440695,0.996332786,6,70,trans-Golgi network membrane,CC
+GO:0098842,0.014966088,0.999297557,2,7,postsynaptic early endosome,CC
+GO:0019897,0.01580249,0.994874239,8,113,extrinsic component of plasma membrane,CC
+GO:0071006,0.016153104,0.999210547,2,7,U2-type catalytic step 1 spliceosome,CC
+GO:0000139,0.018479932,0.990651743,18,363,Golgi membrane,CC
+GO:0071012,0.019119485,0.997663368,3,20,catalytic step 1 spliceosome,CC
+GO:0097443,0.020342243,0.998833788,2,8,sorting endosome,CC
+GO:0098559,0.02034865,0.998833224,2,8,cytoplasmic side of early endosome membrane,CC
+GO:0017101,0.021203404,0.997291145,3,21,aminoacyl-tRNA synthetase multienzyme complex,CC
+GO:0019898,0.022021449,0.990441321,12,216,extrinsic component of membrane,CC
+GO:0031362,0.024802339,0.998375397,2,9,anchored component of external side of plasma membrane,CC
+GO:0030665,0.025403453,0.992650753,6,78,clathrin-coated vesicle membrane,CC
+GO:0005811,0.025427474,0.992638807,6,79,lipid droplet,CC
+GO:0010009,0.025777517,0.998276157,2,9,cytoplasmic side of endosome membrane,CC
+GO:0030126,0.026149781,0.998237719,2,9,COPI vesicle coat,CC
+GO:0005784,0.026545261,1,1,1,Sec61 translocon complex,CC
+GO:0071256,0.026545261,1,1,1,translocon complex,CC
+GO:1990454,0.028987853,1,1,1,L-type voltage-gated calcium channel complex,CC
+GO:0030424,0.029706104,0.982839941,23,526,axon,CC
+GO:0097445,0.030693677,1,1,1,presynaptic active zone dense projection,CC
+GO:0098875,0.030693677,1,1,1,epididymosome,CC
+GO:0045180,0.035358374,0.997088585,2,11,basal cortex,CC
+GO:0045178,0.03557757,0.990326407,5,64,basal part of cell,CC
+GO:0098562,0.039324207,0.982107193,11,208,cytoplasmic side of membrane,CC
+GO:0030659,0.041610839,0.976899467,18,399,cytoplasmic vesicle membrane,CC
+GO:0098845,0.041869611,0.996168745,2,12,postsynaptic endosome,CC
+GO:0098993,0.043434283,0.995944768,2,12,anchored component of synaptic vesicle membrane,CC
+GO:0016459,0.044446536,0.992249425,3,28,myosin complex,CC
+GO:0030692,0.047888117,0.999413516,1,2,Noc4p-Nop14p complex,CC
+GO:0051021,0.002022566,0.999820952,4,19,GDP-dissociation inhibitor binding,MF
+GO:0004819,0.003312176,0.999807721,3,11,glutamine-tRNA ligase activity,MF
+GO:0034722,0.005106274,0.999897155,2,4,gamma-glutamyl-peptidase activity,MF
+GO:0016717,0.010586234,0.99960743,2,6,"oxidoreductase activity, acting on paired donors, with oxidation of a pair of donors resulting in the reduction of molecular oxygen to two molecules of water",MF
+GO:0016595,0.015672439,0.998233003,3,19,glutamate binding,MF
+GO:0004812,0.015895053,0.997287048,4,35,aminoacyl-tRNA ligase activity,MF
+GO:0016875,0.015895053,0.997287048,4,35,"ligase activity, forming carbon-oxygen bonds",MF
+GO:0016861,0.016022252,0.999220314,2,7,"intramolecular oxidoreductase activity, interconverting aldoses and ketoses",MF
+GO:0004857,0.016850038,0.993277209,11,183,enzyme inhibitor activity,MF
+GO:0008409,0.016920588,0.998036617,3,19,5'-3' exonuclease activity,MF
+GO:0016597,0.020476223,0.995210882,5,55,amino acid binding,MF
+GO:0004879,0.022082567,0.998677215,2,8,nuclear receptor activity,MF
+GO:0098531,0.022082567,0.998677215,2,8,ligand-activated transcription factor activity,MF
+GO:0004830,0.023784614,1,1,1,tryptophan-tRNA ligase activity,MF
+GO:0004713,0.024663037,0.992045266,7,100,protein tyrosine kinase activity,MF
+GO:0004602,0.025301678,0.998324845,2,9,glutathione peroxidase activity,MF
+GO:0032794,0.02538021,0.994967704,4,40,GTPase activating protein binding,MF
+GO:0016722,0.025491113,0.998305522,2,9,"oxidoreductase activity, acting on metal ions",MF
+GO:0004838,0.025869887,1,1,1,L-tyrosine:2-oxoglutarate aminotransferase activity,MF
+GO:0070547,0.025869887,1,1,1,L-tyrosine aminotransferase activity,MF
+GO:0035312,0.026589688,0.998191906,2,9,5'-3' exodeoxyribonuclease activity,MF
+GO:0047499,0.026949535,0.998154117,2,9,calcium-independent phospholipase A2 activity,MF
+GO:0004549,0.02699529,0.998149292,2,9,tRNA-specific ribonuclease activity,MF
+GO:0004823,0.027516658,1,1,1,leucine-tRNA ligase activity,MF
+GO:0003920,0.027745999,1,1,1,GMP reductase activity,MF
+GO:0016891,0.028023632,0.995981845,3,23,"endoribonuclease activity, producing 5'-phosphomonoesters",MF
+GO:0001888,0.028583037,1,1,1,glucuronyl-galactosyl-proteoglycan 4-alpha-N-acetylglucosaminyltransferase activity,MF
+GO:0047323,0.028685879,1,1,1,[3-methyl-2-oxobutanoate dehydrogenase (acetyl-transferring)] kinase activity,MF
+GO:0004846,0.028815019,1,1,1,urate oxidase activity,MF
+GO:0016663,0.028815019,1,1,1,"oxidoreductase activity, acting on other nitrogenous compounds as donors, oxygen as acceptor",MF
+GO:0016992,0.029358856,1,1,1,lipoate synthase activity,MF
+GO:0047545,0.029405713,1,1,1,2-hydroxyglutarate dehydrogenase activity,MF
+GO:0004756,0.02945908,1,1,1,"selenide, water dikinase activity",MF
+GO:0016781,0.02945908,1,1,1,"phosphotransferase activity, paired acceptors",MF
+GO:0000248,0.029590051,1,1,1,C-5 sterol desaturase activity,MF
+GO:0050046,0.029590051,1,1,1,delta7-sterol 5(6)-desaturase activity,MF
+GO:0070704,0.029590051,1,1,1,sterol desaturase activity,MF
+GO:0050146,0.029804123,1,1,1,nucleoside phosphotransferase activity,MF
+GO:0016783,0.02984156,0.997795193,2,10,sulfurtransferase activity,MF
+GO:0004379,0.029875597,1,1,1,glycylpeptide N-tetradecanoyltransferase activity,MF
+GO:0019107,0.029875597,1,1,1,myristoyltransferase activity,MF
+GO:0004326,0.02987668,1,1,1,tetrahydrofolylpolyglutamate synthase activity,MF
+GO:0030735,0.030011272,1,1,1,carnosine N-methyltransferase activity,MF
+GO:0033787,0.030310411,1,1,1,cyanocobalamin reductase (cyanide-eliminating) activity,MF
+GO:0016900,0.030349303,1,1,1,"oxidoreductase activity, acting on the CH-OH group of donors, disulfide as acceptor",MF
+GO:0047057,0.030349303,1,1,1,vitamin-K-epoxide reductase (warfarin-sensitive) activity,MF
+GO:0047058,0.030349303,1,1,1,vitamin-K-epoxide reductase (warfarin-insensitive) activity,MF
+GO:0030284,0.030515964,1,1,1,nuclear estrogen receptor activity,MF
+GO:0097162,0.030515964,1,1,1,MADS box domain binding,MF
+GO:0070856,0.030552306,1,1,1,myosin VI light chain binding,MF
+GO:0004567,0.030605912,1,1,1,beta-mannosidase activity,MF
+GO:0004342,0.030672097,1,1,1,glucosamine-6-phosphate deaminase activity,MF
+GO:0042292,0.030832837,1,1,1,URM1 activating enzyme activity,MF
+GO:0004807,0.03083823,1,1,1,triose-phosphate isomerase activity,MF
+GO:0008242,0.031902559,0.997556152,2,10,omega peptidase activity,MF
+GO:0003743,0.032685155,0.992973786,4,42,translation initiation factor activity,MF
+GO:0140101,0.037612233,0.988040692,6,87,"catalytic activity, acting on a tRNA",MF
+GO:0005234,0.045263724,0.995677025,2,12,extracellularly glutamate-gated ion channel activity,MF
+GO:0008068,0.045263724,0.995677025,2,12,extracellularly glutamate-gated chloride channel activity,MF
+GO:0019904,0.048748586,0.970729581,22,526,protein domain specific binding,MF
+GO:0008135,0.048878033,0.985481307,5,69,"translation factor activity, RNA binding",MF
+GO:0031697,0.049658017,0.999368783,1,2,beta-1 adrenergic receptor binding,MF
+GO:2000580,0.002675595,0.99997261,2,3,NA,NA
+GO:2000582,0.002675595,0.99997261,2,3,NA,NA
+GO:2000576,0.005212928,0.999893874,2,4,NA,NA
+GO:2000574,0.012413051,0.999499458,2,6,NA,NA
+GO:0051186,0.020370142,0.988993491,21,451,NA,NA
+GO:0001047,0.023512953,0.995452347,4,39,NA,NA
+GO:0072367,0.02927889,1,1,1,NA,NA
+GO:0072368,0.02927889,1,1,1,NA,NA
+GO:0070283,0.029358856,1,1,1,NA,NA
+GO:0046996,0.029590051,1,1,1,NA,NA
+GO:0004882,0.030515964,1,1,1,NA,NA
+GO:0018192,0.030832837,1,1,1,NA,NA
+GO:0006732,0.038095454,0.980886143,14,288,NA,NA
+GO:0018065,0.049940658,0.994909455,2,13,NA,NA
