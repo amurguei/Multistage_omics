@@ -138,6 +138,85 @@ gsg$allOK #Should return TRUE if not, the R chunk below will take care of flagge
 #}
 #ncol(datExpr) #number genes after
 
+#PCA-----------------------------------------------------------------------------
+
+gPCAdata <- plotPCA(gvst, intgroup = c("timepoint"), returnData=TRUE, ntop=1000) #use ntop to specify all genes
+
+percentVar <- round(100*attr(gPCAdata, "percentVar")) #plot PCA of samples with all data
+
+#allgenesfilt_PCA <- ggplot(gPCAdata, aes(PC1, PC2, shape=timepoint)) + 
+#geom_point(size=3) +
+#xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+#ylab(paste0("PC2: ",percentVar[2],"% variance")) +
+#scale_shape_manual(values = c("I"=1, "II"=2, "III"=3)) +
+#xlim(-40,40)+ 
+#ylim(-40,40)+
+#coord_fixed()+
+#theme_bw() + #Set background color
+#theme(panel.border = element_blank(), # Set border
+#panel.grid.major = element_blank(), #Set major gridlines 
+#panel.grid.minor = element_blank(), #Set minor gridlines
+#axis.line = element_line(colour = "black"), #Set axes color
+#plot.background=element_blank()) # + #Set the plot background
+#theme(legend.position = ("none")) #set title attributes
+#allgenesfilt_PCA
+#ggsave("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/PCA_timepoint.png", allgenesfilt_PCA, width=11, height=8)
+
+
+#some AI modification
+library(ggplot2)
+
+# Check the levels of the timepoint variable
+levels(gPCAdata$timepoint)
+
+# Explicitly set the levels of the timepoint variable
+gPCAdata$timepoint <- factor(gPCAdata$timepoint, levels = c("I", "II", "III"))
+
+# Create the PCA plot
+allgenesfilt_PCA_visual <- 
+  ggplot(data = gPCAdata, aes(PC1, PC2, shape = timepoint, colour = timepoint)) + 
+  geom_point(size = 5) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  scale_shape_manual(values = c("I" = 1, "II" = 2, "III" = 3)) +
+  scale_colour_manual(values = c("I" = 1, "II" = 2, "III" = 3)) +
+  ylim(-50, 50) +
+  coord_fixed() +
+  theme_classic() +
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.background = element_blank()
+  )
+
+# Print the PCA plot
+print(allgenesfilt_PCA_visual)
+
+#another attempt
+
+allgenesfilt_PCA_visual <- 
+  ggplot(data = gPCAdata, aes(PC1, PC2)) + 
+  geom_point(aes(shape = timepoint, colour = timepoint), size = 5) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  ylim(-50, 50) +
+  coord_fixed() +
+  theme_classic() +
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.background = element_blank()
+  )
+
+print(allgenesfilt_PCA_visual)
+
+ggsave("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/PCA_timepointntop=1000.png", allgenesfilt_PCA_visual, width = 11, height = 8)
+
+
 # Cluster the samples to look for obvious outliers
 #Look for outliers by examining the sample tree:
 
@@ -304,7 +383,7 @@ merge= mergeCloseModules(datExpr, dynamicColors, cutHeight= MEDissThres, verbose
 mergedColors= merge$colors
 mergedMEs= merge$newMEs
 
-pdf(file="E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gfff_mergedClusters.pdf", width=20, height=20)
+pdf(file="E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/Mcap_mergedClusters.pdf", width=20, height=20)
 plotDendroAndColors(geneTree, cbind(dynamicColors, mergedColors), c("Dynamic Tree Cut", "Merged dynamic"), dendroLabels= FALSE, hang=0.03, addGuide= TRUE, guideHang=0.05)
 dev.off()
 
@@ -890,15 +969,6 @@ probes = names(datExpr)
 probes2annot = match(probes, annot$gene_id)
 nrow(annot)#24074
 head(annot)
-#A tibble: 6 x 21
-#gene_id     seed_ortholog    evalue score eggNOG_OGs max_annot_lvl COG_category Description
-#<chr>       <chr>             <dbl> <dbl> <chr>      <chr>         <chr>        <chr>      
-#  1 Pocillopor~ 45351.EDO487~ 2.16e-120 364   COG0620@1~ 33208|Metazoa E            Cobalamin-~
-#  2 Pocillopor~ 45351.EDO386~ 3.18e-123 355   COG0450@1~ 33208|Metazoa O            negative r~
-#  3 Pocillopor~ 192875.XP_00~ 1.70e-183 526   COG3239@1~ 33154|Opisth~ I            Fatty acid~
-#  4 Pocillopor~ 45351.EDO287~ 2.94e- 48 172   2ED36@1|r~ 33208|Metazoa -            -          
-#  5 Pocillopor~ 10224.XP_006~ 3.19e- 20  92.4 COG2801@1~ 33208|Metazoa OU           K02A2.6-li~
-#  6 Pocillopor~ 106582.XP_00~ 3.7 e- 14  68.2 2CSTD@1|r~ 33208|Metazoa S            Phosphatid~
 sum(is.na(probes2annot))#10383, this number must be 0.
 # Sums to annot was 10383 because the eggnog files don't have annotations for all the genes,
 # To sort this I created a new dataframe including also the genes without annotation
