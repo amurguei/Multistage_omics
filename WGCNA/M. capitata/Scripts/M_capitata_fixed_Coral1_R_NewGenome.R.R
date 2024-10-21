@@ -57,11 +57,14 @@ library("patchwork")
 
 setwd("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff")
 
+setwd("C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/M. capitata/Inputs")
 
 #Data--------------------------------------------------------------------------------------
 treatmentinfo <- read_csv("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/5-Mcap-SampleInfo.csv")
-
+library(readr)
+treatmentinfo <- read_csv("5-Mcap-SampleInfo.csv")
 gcount <- as.data.frame(read.csv("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/Mcap_transcript_count_matrix.csv", row.names="gene_id"), colClasses = double, header=TRUE)
+gcount <- as.data.frame(read.csv("Mcap_transcript_count_matrix.csv", row.names="gene_id"), colClasses = double, header=TRUE)
 
 
 #Quality filter gene counts-----------------------------------------------------------
@@ -214,7 +217,108 @@ allgenesfilt_PCA_visual <-
 
 print(allgenesfilt_PCA_visual)
 
+# Explicitly set the levels of the timepoint variable
+gPCAdata$timepoint <- factor(gPCAdata$timepoint, levels = c("I", "II", "III"))
+
+allgenesfilt_PCA_visual <- 
+  ggplot(data = gPCAdata, aes(PC1, PC2)) + 
+  geom_point(aes(shape = timepoint, colour = timepoint), size = 6) +  # Increase point size
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  ylim(-50, 50) +
+  coord_fixed() +
+  theme_classic() +
+  theme(
+    axis.text = element_text(size = 16),            # Increase axis text size
+    axis.title = element_text(size = 18, face = "bold"),  # Increase axis label size and make it bold
+    legend.text = element_text(size = 14),          # Increase legend text size
+    legend.title = element_text(size = 16),         # Increase legend title size
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.background = element_blank()
+  )
+
+print(allgenesfilt_PCA_visual)
+
+
+# Install vegan package if you don't have it
+install.packages("vegan")
+
+# Load necessary libraries
+library(vegan)
+library(ggplot2)
+
+
+# Assuming gvst is your DESeqTransform object, extract the assay (expression) data
+gvst_matrix <- assay(gvst)
+
+# Check the structure of the extracted matrix (optional)
+str(gvst_matrix)
+
+# Transpose the matrix and calculate the Bray-Curtis dissimilarity
+# Transposing so that samples are in rows and genes/features are in columns
+dissimilarity_matrix <- vegdist(t(gvst_matrix), method = "bray")
+
+# Optionally, inspect the dissimilarity matrix
+print(dissimilarity_matrix)
+
+# If you plan to use the dissimilarity matrix for downstream analysis (e.g., NMDS or clustering), you can proceed accordingly.
+# For example, you could run NMDS with this matrix:
+nmds <- metaMDS(dissimilarity_matrix)
+
+# Visualize the NMDS (optional)
+plot(nmds, type = "t")
+
 ggsave("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/PCA_timepointntop=1000.png", allgenesfilt_PCA_visual, width = 11, height = 8)
+
+#PERMANOVA
+# Load necessary library
+library(vegan)
+
+# Check the data frames
+str(datExpr)         # Should be a matrix or dataframe with genes as columns and samples as rows
+str(treatmentinfo)   # Should have a sampleID and timepoint (life stages)
+
+# Ensure the row names of datExpr match the sampleID in treatmentinfo
+rownames(datExpr) <- treatmentinfo$sampleID
+
+# Convert timepoint (life stage) to factor if not already
+treatmentinfo$timepoint <- factor(treatmentinfo$timepoint, levels = c("I", "II", "III"))
+
+# Running PERMANOVA with Bray-Curtis dissimilarity
+permanova_result <- adonis2(datExpr ~ timepoint, data = treatmentinfo, method = "bray", permutations = 9999)
+
+print(permanova_result)
+
+# Load the vegan package
+library(vegan)
+library(cluster)
+library(devtools)
+install_github("pmartinezarbizu/pairwiseAdonis/pairwiseAdonis")
+
+library(pairwiseAdonis)
+
+# Assuming datExpr is a data frame with sample IDs as row names
+datExpr <- as.data.frame(datExpr)
+datExpr$sampleID <- rownames(datExpr)
+
+# Merge the expression data with the treatment info
+combined_data <- merge(datExpr, treatmentinfo, by = "sampleID")
+
+# Now, the first few columns will be your expression data, and the last one will be the timepoint
+library(pairwiseAdonis)
+
+# Prepare the expression data (excluding the sampleID and timepoint columns)
+expr_data <- combined_data[, -which(names(combined_data) %in% c("sampleID", "timepoint"))]
+
+# Run pairwise.adonis
+result <- pairwise.adonis(expr_data, combined_data$timepoint, sim.method = "bray", perm=9999)
+
+# View the results
+print(result)
+
 
 
 # Cluster the samples to look for obvious outliers

@@ -54,7 +54,7 @@ library("goseq")
 
 setwd("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/S. pistillata")
 
-
+setwd("C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/S. pistillata/Transcriptomics/Inputs")
 
 #Upload data--------------------------------------------------------------------------
 
@@ -223,6 +223,95 @@ allgenesfilt_PCA_visual <-
 print(allgenesfilt_PCA_visual)
 
 ggsave("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/PCA_timepointntop=1000.png", allgenesfilt_PCA_visual, width = 11, height = 8)
+
+allgenesfilt_PCA_visual <- 
+  ggplot(data = gPCAdata, aes(PC1, PC2)) + 
+  geom_point(aes(shape = timepoint, colour = timepoint), size = 6) +  # Increase point size
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  ylim(-50, 50) +
+  coord_fixed() +
+  theme_classic() +
+  theme(
+    axis.text = element_text(size = 16),            # Increase axis text size
+    axis.title = element_text(size = 18, face = "bold"),  # Increase axis label size and make it bold
+    legend.text = element_text(size = 14),          # Increase legend text size
+    legend.title = element_text(size = 16),         # Increase legend title size
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.background = element_blank()
+  )
+
+print(allgenesfilt_PCA_visual)
+
+
+
+#PERMANOVA
+# Load necessary library
+library(vegan)
+
+# Check the data frames
+str(datExpr)         # Should be a matrix or dataframe with genes as columns and samples as rows
+str(treatmentinfo)   # Should have a sampleID and timepoint (life stages)
+
+# Ensure the row names of datExpr match the sampleID in treatmentinfo
+rownames(datExpr) <- treatmentinfo$sampleID
+
+# Convert timepoint (life stage) to factor if not already
+treatmentinfo$timepoint <- factor(treatmentinfo$timepoint, levels = c("I", "II", "III"))
+
+# Running PERMANOVA with Bray-Curtis dissimilarity
+permanova_result <- adonis2(datExpr ~ timepoint, data = treatmentinfo, method = "bray", permutations = 9999)
+#Permutation test for adonis under reduced model
+#Terms added sequentially (first to last)
+#Permutation: free
+#Number of permutations: 999
+
+#adonis2(formula = datExpr ~ timepoint, data = treatmentinfo, permutations = 999, method = "bray")
+#Df  SumOfSqs      R2      F Pr(>F)   
+#timepoint  2 0.0069751 0.65401 5.6708  0.003 **
+#  Residual   6 0.0036900 0.34599                 
+#Total      8 0.0106651 1.00000                 
+#---
+#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# View results
+print(permanova_result)
+
+# Load the vegan package
+library(vegan)
+library(cluster)
+library(devtools)
+install_github("pmartinezarbizu/pairwiseAdonis/pairwiseAdonis")
+
+library(pairwiseAdonis)
+
+pairwise.adonis(datExpr ~ timepoint, sim.method = "bray")
+
+# Assuming datExpr is a data frame with sample IDs as row names
+datExpr <- as.data.frame(datExpr)
+datExpr$sampleID <- rownames(datExpr)
+
+# Merge the expression data with the treatment info
+combined_data <- merge(datExpr, treatmentinfo, by = "sampleID")
+
+# Now, the first few columns will be your expression data, and the last one will be the timepoint
+library(pairwiseAdonis)
+
+# Prepare the expression data (excluding the sampleID and timepoint columns)
+expr_data <- combined_data[, -which(names(combined_data) %in% c("sampleID", "timepoint"))]
+
+# Run pairwise.adonis
+result <- pairwise.adonis(expr_data, combined_data$timepoint, sim.method = "bray", perm=9999)
+
+# View the results
+print(result)
+
+dim(expr_data) # should match with the number of samples in treatmentinfo
+head(combined_data) # check combined data to see if timepoints align with samples
+
 
 #Choose a set of soft-thresholding powers
 powers <- c(seq(from = 1, to=19, by=2), c(21:30)) #Create a string of numbers from 1 through 10, and even numbers from 10 through 20

@@ -59,6 +59,10 @@ library(dplyr)
 library(DESeq2)
 library(readr)
 
+setwd("C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/S. pistillata/Proteomics/Inputs")
+setwd("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/S. pistillata/Proteomics")
+
+
 # Upload data--------------------------------------------------------------------------
 
 treatmentinfo <- read_csv("Sample_info.csv")
@@ -118,7 +122,6 @@ any(!apply(gcount, 2, function(x) all(x == floor(x))))
 gdds <- DESeqDataSetFromMatrix(countData = gcount,
                                colData = treatmentinfo,
                                design = ~timepoint)
-
 # Log-transform the count data using a variance stabilizing transformation (vst). 
 SF.gdds <- estimateSizeFactors(gdds) # estimate size factors to determine if we can use vst to transform our data. Size factors should be less than 4 to use vst
 print(sizeFactors(SF.gdds)) # View size factors
@@ -132,9 +135,6 @@ datExpr <- as.data.frame(t(assay(gvst))) # transpose to output to a new data fra
 # Set the row names of datExpr to the Unique_IDs from gcount
 rownames(datExpr) <- gcount$Unique_ID
 
-
-
-setwd("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/S. pistillata/Proteomics")
 
 #Check for genes and samples with too many missing values with goodSamplesGenes. There shouldn't be any because we performed pre-filtering
 gsg = goodSamplesGenes(datExpr, verbose = 3)
@@ -197,7 +197,58 @@ allgenesfilt_PCA_visual <-
 # Print the PCA plot
 print(allgenesfilt_PCA_visual)
 
+
+# Explicitly set the levels of the timepoint variable
+gPCAdata$timepoint <- factor(gPCAdata$timepoint, levels = c("I", "II", "III"))
+
+allgenesfilt_PCA_visual <- 
+  ggplot(data = gPCAdata, aes(PC1, PC2)) + 
+  geom_point(aes(shape = timepoint, colour = timepoint), size = 6) +  # Increase point size
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  ylim(ylim_range) +  # Use updated y-axis limits
+  coord_fixed() +
+  theme_classic() +
+  theme(
+    axis.text = element_text(size = 16),            # Increase axis text size
+    axis.title = element_text(size = 18, face = "bold"),  # Increase axis label size and make it bold
+    legend.text = element_text(size = 14),          # Increase legend text size
+    legend.title = element_text(size = 16),         # Increase legend title size
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.background = element_blank()
+  )
+
+print(allgenesfilt_PCA_visual)
+
 ggsave("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/S. pistillata/Proteomics/PCA_timepointntop=1000.png", allgenesfilt_PCA_visual, width = 11, height = 8)
+
+# Load necessary libraries
+library(vegan)
+library(ggplot2)
+
+
+# Assuming gvst is your DESeqTransform object, extract the assay (expression) data
+gvst_matrix <- assay(gvst)
+
+# Check the structure of the extracted matrix (optional)
+str(gvst_matrix)
+
+# Transpose the matrix and calculate the Bray-Curtis dissimilarity
+# Transposing so that samples are in rows and genes/features are in columns
+dissimilarity_matrix <- vegdist(t(gvst_matrix), method = "bray")
+
+# Optionally, inspect the dissimilarity matrix
+print(dissimilarity_matrix)
+
+# If you plan to use the dissimilarity matrix for downstream analysis (e.g., NMDS or clustering), you can proceed accordingly.
+# For example, you could run NMDS with this matrix:
+nmds <- metaMDS(dissimilarity_matrix)
+
+# Visualize the NMDS (optional)
+plot(nmds, type = "t")
 
 
 #Choose a set of soft-thresholding powers
