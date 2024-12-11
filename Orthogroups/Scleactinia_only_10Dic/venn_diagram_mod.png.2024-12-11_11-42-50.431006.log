@@ -1,0 +1,43 @@
+INFO [2024-12-11 11:42:50] $x
+INFO [2024-12-11 11:42:50] list(Montipora_capitata = Montipora_capitata_orthogroups, Pocillopora_acuta = Pocillopora_acuta_orthogroups, 
+INFO [2024-12-11 11:42:50]     Stylophora_pistillata = Stylophora_pistillata_orthogroups)
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $category.names
+INFO [2024-12-11 11:42:50] c(expression(atop(italic("Montipora capitata"), plain(format(length_Montipora, 
+INFO [2024-12-11 11:42:50]     big.mark = ",")))), expression(atop(italic("Pocillopora acuta"), 
+INFO [2024-12-11 11:42:50]     plain(format(length_Pocillopora, big.mark = ",")))), expression(atop(italic("Stylophora pistillata"), 
+INFO [2024-12-11 11:42:50]     plain(format(length_Stylophora, big.mark = ",")))))
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $filename
+INFO [2024-12-11 11:42:50] [1] "venn_diagram_mod.png"
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $output
+INFO [2024-12-11 11:42:50] [1] TRUE
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $imagetype
+INFO [2024-12-11 11:42:50] [1] "png"
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $scaled
+INFO [2024-12-11 11:42:50] [1] FALSE
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $col
+INFO [2024-12-11 11:42:50] [1] "black"
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $fill
+INFO [2024-12-11 11:42:50] colors
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $cat.col
+INFO [2024-12-11 11:42:50] colors
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $cat.cex
+INFO [2024-12-11 11:42:50] [1] 0.95
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $cat.dist
+INFO [2024-12-11 11:42:50] [1] 0.35
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $margin
+INFO [2024-12-11 11:42:50] [1] 0.3
+INFO [2024-12-11 11:42:50] 
+INFO [2024-12-11 11:42:50] $euler.d
+INFO [2024-12-11 11:42:50] [1] FALSE
+INFO [2024-12-11 11:42:50] 

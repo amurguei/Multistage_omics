@@ -1,0 +1,43 @@
+INFO [2024-12-11 11:34:29] $x
+INFO [2024-12-11 11:34:29] list(Montipora_capitata = Montipora_capitata_HIv3.genes.pep_orthogroups, 
+INFO [2024-12-11 11:34:29]     Pocillopora_acuta = Pocillopora_acuta_HIv2.genes.pep_orthogroups, 
+INFO [2024-12-11 11:34:29]     Spis = Spis.genome.annotation.pep.longest_orthogroups)
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $category.names
+INFO [2024-12-11 11:34:29] c(expression(atop(italic("Montipora capitata"), plain(19999))), 
+INFO [2024-12-11 11:34:29]     expression(atop(italic("Pocillopora acuta"), plain(18372))), 
+INFO [2024-12-11 11:34:29]     expression(atop(italic("Stylophora pistillata"), plain(16043))))
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $filename
+INFO [2024-12-11 11:34:29] [1] "venn_diagram_coral_species.png"
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $output
+INFO [2024-12-11 11:34:29] [1] TRUE
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $imagetype
+INFO [2024-12-11 11:34:29] [1] "png"
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $scaled
+INFO [2024-12-11 11:34:29] [1] FALSE
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $col
+INFO [2024-12-11 11:34:29] [1] "black"
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $fill
+INFO [2024-12-11 11:34:29] colors
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $cat.col
+INFO [2024-12-11 11:34:29] colors
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $cat.cex
+INFO [2024-12-11 11:34:29] [1] 0.95
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $cat.dist
+INFO [2024-12-11 11:34:29] [1] 0.35
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $margin
+INFO [2024-12-11 11:34:29] [1] 0.3
+INFO [2024-12-11 11:34:29] 
+INFO [2024-12-11 11:34:29] $euler.d
+INFO [2024-12-11 11:34:29] [1] FALSE
+INFO [2024-12-11 11:34:29] 
