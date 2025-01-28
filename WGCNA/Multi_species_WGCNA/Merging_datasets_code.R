@@ -209,17 +209,210 @@ head(final_orthogroups_no_suffixes)
 # Extract gene names from the species count matrix (Stylophora in this case)
 genes_in_count_matrix <- rownames(species4_counts)
 
+# Add this column to your final_orthogroups dataframe
+final_orthogroups$final_orthogroups_no_suffixes <- final_orthogroups_no_suffixes
+View(final_orthogroups)
+View(species4_counts)
+head(matching_genes)
+#Check how many matched genes there are
+length(matching_genes)
+#7128
 
-# Step 1: Extract Montipora orthogroups (in case final_orthogroups file stores them in a specific column for this species)
-montipora_orthogroups_column <- final_orthogroups$Montipora_capitata_HIv3.genes.pep  # Adjust if necessary
-montipora_orthogroups <- unique(montipora_orthogroups_column)
+#Now I'm changing the name of final_orthogroups_no_suffixes to something more intuitive
+# Rename the column in the final_orthogroups dataframe
+colnames(final_orthogroups)[colnames(final_orthogroups) == "final_orthogroups_no_suffixes"] <- "Spis.genome.annotation.pep.longest_no_suffixes"
 
-# Step 2: Extract Stylophora orthogroups and remove suffixes from the gene names (remove ".t1", ".t2", etc.)
-stylophora_orthogroups <- unique(final_orthogroups$final_orthogroups_no_suffixes) 
-stylophora_orthogroups_no_suffixes <- gsub("\\.t\\d+$", "", stylophora_orthogroups)
+# Verify the change
+colnames(final_orthogroups)
 
-# Step 3: Identify the orthogroups in Montipora that are NOT present in Stylophora
-missing_orthogroups_stylophora <- setdiff(montipora_orthogroups, stylophora_orthogroups_no_suffixes)
+#Let's see now if I can merge the Acropora tenuis data orthogroups with the 
 
+# Step 1: Prepare for the join
 # Create a dataframe for species1_counts with gene IDs as a column
 species1_counts_df <- data.frame(GeneID = rownames(species1_counts), species1_counts)
+
+#Removing the additional columns from this dataset: 
+# Remove columns 1 to 6 from species1_counts_df
+species1_counts_df <- species1_counts_df[, -c(2:6)]
+
+# Verify the updated dataframe
+head(species1_counts_df)
+
+
+# Step 3: Left join using GeneID as key
+merged_data_acropora <- merge(species1_counts_df, final_orthogroups, by.x = "GeneID", by.y = "Acropora_tenuis_0.11.maker_post_001.proteins", all.x = TRUE)
+
+# Step 4: Check the results
+head(merged_data_acropora)
+
+# Overwrite merged_data_acropora to keep only rows where Orthogroup is not NA
+merged_data_acropora <- merged_data_acropora[!is.na(merged_data_acropora$Orthogroup), ]
+
+# Check the filtered results
+head(merged_data_acropora)
+
+# Reorder the columns to move Orthogroup to the first position
+merged_data_acropora <- merged_data_acropora[, c("Orthogroup", setdiff(names(merged_data_acropora), "Orthogroup"))]
+
+# Check the updated dataframe
+head(merged_data_acropora)
+
+# Rename GeneID column to GeneID_Atenuis
+colnames(merged_data_acropora)[colnames(merged_data_acropora) == "GeneID"] <- "GeneID_Atenuis"
+
+# Check the updated dataframe
+head(merged_data_acropora)
+
+#Let's move the other columns to the front
+
+# Identify the columns to be moved
+columns_to_move <- c("Montipora_capitata_HIv3.genes.pep", 
+                     "Pocillopora_acuta_HIv2.genes.pep", 
+                     "Spis.genome.annotation.pep.longest", 
+                     "Spis.genome.annotation.pep.longest_no_suffixes")
+
+# Reorder columns
+merged_data_acropora <- merged_data_acropora[, c(
+  colnames(merged_data_acropora)[1:2],  # Keep the first two columns
+  columns_to_move,                      # Add the selected columns here
+  setdiff(colnames(merged_data_acropora)[3:ncol(merged_data_acropora)], columns_to_move) # Add the remaining columns
+)]
+
+# Check the updated dataframe
+head(merged_data_acropora)
+
+#Amazing, now let's try joining Montipora too
+
+# Step 1: Create a dataframe for species2_counts with gene IDs as a column
+species2_counts_df <- data.frame(GeneID_Mcap = rownames(species2_counts), species2_counts)
+
+# Step 2: Left join species2_counts with final_orthogroups
+merged_data_acropora_montipora <- merge(
+  merged_data_acropora,                          # Start with Acropora merged data
+  species2_counts_df,                            # Add Montipora data
+  by.x = "Montipora_capitata_HIv3.genes.pep",    # Match Montipora column from final_orthogroups
+  by.y = "GeneID_Mcap",                          # Use renamed Montipora GeneID column
+  all.x = TRUE                                   # Keep only rows with Acropora orthogroups
+)
+
+# Step 3: Remove rows where Orthogroup is NA
+merged_data_acropora_montipora <- merged_data_acropora_montipora[!is.na(merged_data_acropora_montipora$Orthogroup), ]
+
+# Step 4: Reorder columns to move "Orthogroup" and Montipora gene data
+columns_to_move <- c("Orthogroup", "GeneID_Mcap", colnames(species2_counts)) # Bring in species2 columns to the front
+merged_data_acropora_montipora <- merged_data_acropora_montipora[, c(
+  columns_to_move,                                      # Orthogroup and species2 data
+  setdiff(colnames(merged_data_acropora_montipora), columns_to_move)  # The rest of the columns
+)]
+
+# Step 5: Check results
+head(merged_data_acropora_montipora)
+
+# Step 6 Bring Orthogroup to the first column and rename the GeneID column for Montipora
+merged_data_acropora_montipora <- merged_data_acropora_montipora %>%
+  select(Orthogroup, everything()) %>%
+  rename(GeneID_Mcap = Montipora_capitata_HIv3.genes.pep)
+
+# Step 7 Check the merging results
+head(merged_data_acropora_montipora)
+
+# Reorder the columns: Orthogroup, GeneID_Atenuis, GeneID_Mcap, then the rest
+merged_data_acropora_montipora <- merged_data_acropora_montipora %>%
+  select(Orthogroup, GeneID_Atenuis, GeneID_Mcap, everything())
+
+# Check the final results
+head(merged_data_acropora_montipora)
+
+# Pocillopora merger
+
+# Step 1: Prepare Pocillopora data for the merge
+# Create a dataframe for Pocillopora counts with GeneIDs as a column
+species3_counts_df <- data.frame(GeneID_Pacu = rownames(species3_counts), species3_counts)
+
+# Step 2: Left join Pocillopora data with the merged_data_acropora_montipora that has orthogroups
+merged_data_acropora_montipora_pocillopora <- merge(
+  merged_data_acropora_montipora,                # Start with the merged Acropora and Montipora data
+  species3_counts_df,                            # Add Pocillopora data
+  by.x = "Pocillopora_acuta_HIv2.genes.pep",     # Pocillopora column from final_orthogroups
+  by.y = "GeneID_Pacu",                          # Use renamed Pocillopora GeneID column
+  all.x = TRUE                                   # Keep only rows with the existing orthogroups
+)
+
+
+# Step 4: Rename the Pocillopora gene column if necessary
+colnames(merged_data_acropora_montipora_pocillopora)[which(colnames(merged_data_acropora_montipora_pocillopora) == "Pocillopora_acuta_HIv2.genes.pep")] <- "GeneID_Pacu"
+
+# Step 5: Reorder columns to have Orthogroup, GeneID_Atenuis, GeneID_Mcap, GeneID_Pacu
+merged_data_acropora_montipora_pocillopora <- merged_data_acropora_montipora_pocillopora %>%
+  select(Orthogroup, GeneID_Atenuis, GeneID_Mcap, GeneID_Pacu, everything())
+
+# Check the final results
+head(merged_data_acropora_montipora_pocillopora)
+
+#Now let's try Spis and see if the merger allows to identify the missing gene
+# Step 1: Prepare Stylophora (Species 4) data
+species4_counts_df <- data.frame(GeneID_Spis = rownames(species4_counts), species4_counts)
+
+# Step 2: Left join Stylophora data with the merged_data_acropora_montipora_pocillopora that has orthogroups
+merged_data_acropora_montipora_pocillopora_spis <- merge(
+  merged_data_acropora_montipora_pocillopora,                      # Start with the merged Acropora, Montipora, and Pocillopora data
+  species4_counts_df,                                              # Add Stylophora data
+  by.x = "Spis.genome.annotation.pep.longest_no_suffixes",          # Stylophora column from final_orthogroups
+  by.y = "GeneID_Spis",                                            # Use renamed Stylophora GeneID column
+  all.x = TRUE                                                     # Keep only rows with existing orthogroups
+)
+
+# Step 3: Rename the Stylophora gene column if necessary
+colnames(merged_data_acropora_montipora_pocillopora_spis)[which(colnames(merged_data_acropora_montipora_pocillopora_spis) == "Spis.genome.annotation.pep.longest_no_suffixes")] <- "GeneID_Spis"
+
+# Step 4: Reorder columns to have Orthogroup, GeneID_Atenuis, GeneID_Mcap, GeneID_Pacu, GeneID_Spis
+merged_data_acropora_montipora_pocillopora_spis <- merged_data_acropora_montipora_pocillopora_spis %>%
+  select(Orthogroup, GeneID_Atenuis, GeneID_Mcap, GeneID_Pacu, GeneID_Spis, everything())
+
+# Check the final results
+head(merged_data_acropora_montipora_pocillopora_spis)
+
+#AMAZING, now let's take a look 
+
+# Check for NAs in the whole dataset
+sum(is.na(merged_data_acropora_montipora_pocillopora_spis))
+
+# Check how many NAs are there per column
+colSums(is.na(merged_data_acropora_montipora_pocillopora_spis))
+
+# Check the rows where there are NAs (if any)
+na_rows <- merged_data_acropora_montipora_pocillopora_spis[!complete.cases(merged_data_acropora_montipora_pocillopora_spis), ]
+head(na_rows)
+
+# Check for NAs in the whole dataset
+sum(is.na(merged_data_acropora_montipora_pocillopora_spis))
+
+# Check how many NAs are there per column
+colSums(is.na(merged_data_acropora_montipora_pocillopora_spis))
+
+# Check the rows where there are NAs (if any)
+na_rows <- merged_data_acropora_montipora_pocillopora_spis[!complete.cases(merged_data_acropora_montipora_pocillopora_spis), ]
+head(na_rows)
+
+#I was able to identify the NA :):):) I'm going to fix it manually since it's so much easier than through code
+#Orthogroup       GeneID_Atenuis                                GeneID_Mcap                           GeneID_Pacu  GeneID_Spis Spis.genome.annotation.pep.longest
+#422  OG0007064 aten_0.1.m1.17048.m1 Montipora_capitata_HIv3___RNAseq.g12926.t1 Pocillopora_acuta_HIv2___TS.g21030.t2 Spis11155.t4                       Spis11155.t4
+#DRR318288 DRR318289 DRR318291 DRR318293 DRR318294 DRR318295 DRR318297 DRR318298 DRR318299 AH1 AH2 AH3 AH4 AH5 AH6  AH7  AH8  AH9 SRR3051863 SRR3051864 SRR3051865
+#422       761       948       564       944      1745       664      5536      5255      4362 728 874 890 989 761 899 1982 2156 2093        248        319        411
+#SRR3051866 SRR3051867 SRR3051868 SRR3051869 SRR3051870 SRR3051871 SRR14333319 SRR14333320 SRR14333321 SRR14333322 SRR14333323 SRR14333324 SRR14333325 SRR14333326
+#422       1847       2322        927        166        139        172          NA          NA          NA          NA          NA          NA          NA          NA
+#SRR14333327
+#422          NA
+
+#Now we are going to save everything I need from here
+# Save the merged dataset to a CSV file
+write.csv(merged_data_acropora_montipora_pocillopora_spis, 
+          "merged_data_acropora_montipora_pocillopora_spis.csv", 
+          row.names = FALSE)
+
+
+# Save the final_orthogroups dataframe to a CSV file
+write.csv(final_orthogroups, 
+          "final_orthogroups.csv", 
+          row.names = FALSE)
+
