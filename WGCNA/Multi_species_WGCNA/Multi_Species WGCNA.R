@@ -44,6 +44,8 @@ if ("ComplexHeatmap" %in% rownames(installed.packages()) == 'FALSE') BiocManager
 if ("goseq" %in% rownames(installed.packages()) == 'FALSE') BiocManager::install('goseq')
 if ("simplifyEnrichment" %in% rownames(installed.packages()) == 'FALSE')BiocManager::install("simplifyEnrichment")
 if ("clusterProfiler" %in% rownames(installed.packages()) == 'FALSE') BiocManager::install('clusterProfiler') 
+if ("sva" %in% rownames(installed.packages()) == 'FALSE') BiocManager::install("sva")
+
 
 
 library(installr)
@@ -77,6 +79,7 @@ library("patchwork")
 library("dendsort")
 library("ggplot2")
 library("dplyr")
+library("sva")
 
 setwd("C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA")
 setwd("C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/Multi_species_WGCNA")
@@ -163,6 +166,34 @@ nrow(gcount)  # Before filtering
 nrow(gcount_filt) # After filtering
 #7118
 
+#Now I'm going to try to remove batch effects because it's looking a little tetric right now. I'm trying Combat-Seq
+
+# Load necessary library
+library(sva)
+
+# Load necessary library
+library(sva)
+library(dplyr)  # Ensure dplyr is loaded for data manipulation
+
+# Convert treatmentinfo to a dataframe (avoid tibble issues)
+treatmentinfo <- as.data.frame(treatmentinfo)
+
+# Ensure gcount_filt is a matrix
+gcount_filt <- as.matrix(gcount_filt)
+
+# Extract batch information correctly (align column names with new_names)
+batch_info <- treatmentinfo$Species[match(colnames(gcount_filt), treatmentinfo$new_names)]
+
+# Ensure batch_info is a factor
+batch_info <- as.factor(batch_info)
+
+# Apply ComBat-seq batch correction
+gcount_corrected <- ComBat_seq(counts = gcount_filt, batch = batch_info, group = NULL)
+
+# Check the adjusted count matrix
+head(gcount_corrected)
+
+
 # Normalize our read counts using VST-normalization in DESeq2
 # Construct the DESeq2 dataset
 
@@ -171,7 +202,7 @@ treatmentinfo$timepoint <- factor(treatmentinfo$timepoint, levels = c("I","II","
 treatmentinfo$Species <- factor(treatmentinfo$Species, levels = c("Acropora_tenuis", "Montipora_capitata", "Pocillopora_acuta","Stylophora_pistillata"))
 
 
-gdds <- DESeqDataSetFromMatrix(countData = gcount_filt,
+gdds <- DESeqDataSetFromMatrix(countData = gcount_corrected,
                                colData = treatmentinfo,
                                design = ~ Species * timepoint)
 # Log-transform the count data using a variance stabilizing transforamtion (vst). 
@@ -222,7 +253,7 @@ gsg$allOK #Should return TRUE if not, the R chunk below will take care of flagge
 sampleTree = hclust(dist(datExpr), method = "average")
 
 #Plot the sample tree
-pdf(paste0('sampleTree','.pdf'))
+pdf(paste0('sampleTree_ComBat','.pdf'))
 plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5, cex.axis = 1.5, cex.main = 2)
 dev.off()
 
@@ -333,6 +364,7 @@ a2 <- ggplot(sft$fitIndices, aes(Power, mean.k., label = Power)) +
   theme_classic()
 
 grid.arrange(a1, a2, nrow = 2)
+
 
 
 
