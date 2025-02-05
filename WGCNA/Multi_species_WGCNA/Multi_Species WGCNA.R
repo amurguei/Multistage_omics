@@ -259,7 +259,7 @@ dev.off()
 
 
 #PCA--------------------------------------------------------------------------------------------------------------
-gPCAdata <- plotPCA(gvst, intgroup = c("timepoint", "Species"), returnData=TRUE, ntop=5000)
+gPCAdata <- plotPCA(gvst, intgroup = c("timepoint", "Species"), returnData=TRUE, ntop=500)
 
 percentVar <- round(100 * attr(gPCAdata, "percentVar"))
 
@@ -275,7 +275,6 @@ allgenesfilt_PCA_visual <-
   geom_point(size = 5) +
   xlab(paste0("PC1: ", percentVar[1], "% variance")) +
   ylab(paste0("PC2: ", percentVar[2], "% variance")) +
-  ylim(-50, 50) +
   coord_fixed() +
   theme_classic() +
   theme(
@@ -292,7 +291,7 @@ print(allgenesfilt_PCA_visual)
 
 
 #Choose a set of soft-thresholding powers
-powers <- c(seq(from = 1, to=19, by=2), c(21:30)) #Create a string of numbers from 1 through 10, and even numbers from 10 through 20
+powers <- c(seq(from = 1, to=19, by=1), c(21:30)) #Create a string of numbers from 1 through 10, and even numbers from 10 through 20
 powerVector = c(seq(1, 10, by = 1), seq(12, 20, by = 1))
 
 # Load the doParallel package
@@ -315,7 +314,7 @@ par(mfrow = c(1, 2))
 cex1 = 0.9
 
 #Scale-free topology fit index as a function of the soft-thresholding power
-pdf(paste0('network', '.pdf'))
+pdf(paste0('network+combat', '.pdf'))
 plot(sft$fitIndices[, 1], -sign(sft$fitIndices[, 3]) * sft$fitIndices[, 2],
      xlab = "Soft Threshold (power)", ylab = "Scale Free Topology Model Fit, signed R^2", type = "n",
      main = paste("Scale independence"))
@@ -366,5 +365,304 @@ a2 <- ggplot(sft$fitIndices, aes(Power, mean.k., label = Power)) +
 grid.arrange(a1, a2, nrow = 2)
 
 
+softPower=10 #Set softPower to 17# let's start with 10
+adjacency=adjacency(datExpr, power=softPower,type="signed") #Calculate adjacency
+TOM= TOMsimilarity(adjacency,TOMType = "signed") #Translate adjacency into topological overlap matrix
+dissTOM= 1-TOM #Calculate dissimilarity in TOM
+save(adjacency, file = "C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/TOM_10sft.RData")
+save(TOM, file ="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/TOM_10sft.RData")
+save(dissTOM, file = "C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/disstomsft10.RData") 
+load(file = "C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/disstomsft10.RData")
+
+#Form distance matrix
+geneTree= flashClust(as.dist(dissTOM), method="average")
+
+#We will now plot a dendrogram of genes. Each leaf corresponds to a gene, branches grouping together densely are interconnected, highly co-expressed genes
+pdf(file="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/Multisp_dissTOMClustering.pdf", width=20, height=20)
+plot(geneTree, xlab="", sub="", main= "Gene Clustering on TOM-based dissimilarity", labels= FALSE,hang=0.04)
+dev.off()
+
+# Module identification is cutting the branches off the tree in the dendrogram above. We want large modules, so we set the minimum module size 
+# relatively high (minimum size = 30).
+
+minModuleSize = 30 #default value used most often
+dynamicMods = cutreeDynamic(dendro = geneTree, distM = dissTOM,
+                            deepSplit = 2, pamRespectsDendro = FALSE,
+                            minClusterSize = minModuleSize)
+table(dynamicMods) #list modules and respective sizes
+#dynamicMods
+#1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29 
+#1020  476  439  331  293  267  245  234  230  205  189  170  151  150  144  143  130  123  120  120  119  114  105   95   92   92   91   84   78 
+#30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49 
+#77   67   65   63   62   60   58   57   57   57   56   55   55   49   46   44   41   35   32   32
+
+dynamicColors = labels2colors(dynamicMods) # Convert numeric labels into colors
+table(dynamicColors)
+#table(dynamicColors)
+dynamicColors
+#bisque4           black            blue           brown          brown4            cyan       darkgreen        darkgrey     darkmagenta 
+#35             245             476             439              41             150             114              95              62 
+#darkolivegreen      darkorange     darkorange2         darkred   darkslateblue   darkturquoise     floralwhite           green     greenyellow 
+#63              92              44             119              32             105              46             293             189 
+#grey60           ivory       lightcyan      lightcyan1      lightgreen lightsteelblue1     lightyellow         magenta   mediumpurple3 
+#130              49             143              55             123              55             120             230              56 
+#midnightblue          orange      orangered4   paleturquoise            pink           plum1           plum2          purple             red 
+#144              92              57              67             234              57              32             205             267 
+#royalblue     saddlebrown          salmon         sienna3         skyblue        skyblue3       steelblue             tan       turquoise 
+#120              78             151              60              84              57              77             170            1020 
+#violet           white          yellow     yellowgreen 
+#65              91             331              58 
+
+pdf(file="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/dissTOMColorClustering.pdf", width=20, height=20)
+plotDendroAndColors(geneTree, dynamicColors, "Dynamic Tree Cut", dendroLabels = FALSE, hang = 0.03, addGuide = TRUE, guideHang = 0.05, main = "Gene dendrogram and module colors")
+dev.off()
+
+# Merge modules whose expression profiles are very similar or choose not to merge
+# Plot module similarity based on eigengene value
+
+#Calculate eigengenes
+MEList = moduleEigengenes(datExpr, colors = dynamicColors, softPower = 17)
+MEs = MEList$eigengenes
+
+#Calculate dissimilarity of module eigengenes
+MEDiss = 1-cor(MEs)
+
+#Cluster again and plot the results
+METree = flashClust(as.dist(MEDiss), method = "average")
+
+pdf(file="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/eigengeneClustering1.pdf", width = 20)
+plot(METree, main = "Clustering of module eigengenes", xlab = "", sub = "")
+dev.off()
+
+#Merge modules with >85% eigengene similarity (most studies use80-90% similarity)
+
+MEDissThres= 0.15 #merge modules that are 85% similar
+
+pdf(file="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/eigengeneClustering2.pdf", width = 20)
+plot(METree, main = "Clustering of module eigengenes", xlab = "", sub = "")
+abline(h=MEDissThres, col="red")
+dev.off()
+
+merge= mergeCloseModules(datExpr, dynamicColors, cutHeight= MEDissThres, verbose =3)
+#mergeCloseModules: Merging modules whose distance is less than 0.15
+#multiSetMEs: Calculating module MEs.
+#Working on set 1 ...
+#moduleEigengenes: Calculating 49 module eigengenes in given set.
+#multiSetMEs: Calculating module MEs.
+#Working on set 1 ...
+#moduleEigengenes: Calculating 43 module eigengenes in given set.
+#multiSetMEs: Calculating module MEs.
+#Working on set 1 ...
+#moduleEigengenes: Calculating 42 module eigengenes in given set.
+#Calculating new MEs...
+#multiSetMEs: Calculating module MEs.
+#Working on set 1 ...
+#moduleEigengenes: Calculating 42 module eigengenes in given set.
+
+# Check the structure of the merge object
+print(names(merge))
+#[1] "colors"    "dendro"    "oldDendro" "cutHeight" "oldMEs"    "newMEs"    "allOK"    
+
+# Assign mergedColors
+mergedColors = merge$colors
 
 
+# Check if mergedColors is assigned correctly
+print(head(mergedColors))
+#[1] "darkmagenta" "salmon"      "darkmagenta" "pink"        "blue"        "blue"     
+
+# Plot dendrogram and colors
+pdf(file="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/mergedClusters.pdf", width=20, height=20)
+plotDendroAndColors(geneTree, cbind(dynamicColors, mergedColors), c("Dynamic Tree Cut", "Merged dynamic"), dendroLabels=FALSE, hang=0.03, addGuide=TRUE, guideHang=0.05)
+dev.off()
+
+#Save new colors
+
+moduleColors = mergedColors # Rename to moduleColors
+colorOrder = c("grey", standardColors(50)); # Construct numerical labels corresponding to the colors
+moduleLabels = match(moduleColors, colorOrder)-1;
+
+# Assign merged module eigengenes
+MEs = merge$newMEs
+
+# Check if MEs is assigned correctly
+print(head(MEs))
+#42 modules, looking good
+
+# Plot new tree
+#Calculate dissimilarity of module eigengenes
+MEDiss = 1-cor(MEs)
+#Cluster again and plot the results
+pdf(file="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/eigengeneClustering3.pdf")
+METree = flashClust(as.dist(MEDiss), method = "average")
+MEtreePlot = plot(METree, main = "Clustering of module eigengenes", xlab = "", sub = "")
+dev.off()
+
+# Relating modules to group, quantifying moduletrait associations
+#Prepare trait data. Data has to be numeric, so I replaced the group for numeric values
+colnames(treatmentinfo)
+str(treatmentinfo)
+head(treatmentinfo$group)
+
+allTraits <- names(treatmentinfo$group)
+allTraits$Larvae_Atenuis <- c(1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+allTraits$Meta_Atenuis   <- c(0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+allTraits$Spat_Atenuis   <- c(0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+allTraits$Larvae_Mcap    <- c(0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+allTraits$Meta_Mcap      <- c(0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+allTraits$Spat_Mcap      <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+allTraits$Larvae_Pacu    <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+allTraits$Meta_Pacu      <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0)
+allTraits$Spat_Pacu      <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0)
+allTraits$Larvae_Spis    <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0)
+allTraits$Meta_Spis      <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0)
+allTraits$Spat_Spis      <- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1)
+
+datTraits <- as.data.frame(allTraits)
+dim(datTraits)
+#36 12
+
+rownames(datTraits) <- treatmentinfo$sample_id
+print(datTraits)
+
+#Define numbers of genes and samples
+nGenes = ncol(datExpr)
+nSamples = nrow(datExpr)
+
+#Recalculate MEs with color labels
+MEs0 = moduleEigengenes(datExpr, moduleColors,softPower=17)$eigengenes
+MEs = orderMEs(MEs0)
+names(MEs)
+
+# [1] "MEdarkolivegreen"  "MEdarkslateblue"   "MElightyellow"     "MEdarkred"         "MEturquoise"       "MEroyalblue"       "MEsalmon"         
+#[8] "MEbisque4"         "MEmidnightblue"    "MEpaleturquoise"   "MEblack"           "MEpink"            "MEpurple"          "MEdarkmagenta"    
+#[15] "MEblue"            "MEskyblue3"        "MEorangered4"      "MEskyblue"         "MEdarkorange"      "MEmediumpurple3"   "MEbrown4"         
+#[22] "MEivory"           "MEyellowgreen"     "MEgrey60"          "MElightcyan"       "MEcyan"            "MEgreenyellow"     "MEgreen"          
+#[29] "MEdarkturquoise"   "MEorange"          "MEbrown"           "MEsaddlebrown"     "MEdarkgrey"        "MEmagenta"         "MElightgreen"     
+#[36] "MElightsteelblue1" "MEred"             "MEplum2"           "MEsteelblue"       "MEfloralwhite"     "MEdarkgreen"       "MEdarkorange2"    
+
+
+moduleTraitCor = cor(MEs, datTraits, use = "p");
+moduleTraitPvalue = corPvalueStudent(moduleTraitCor, nSamples);
+Colors=sub("ME","",names(MEs))
+
+moduleTraitTree = hclust(dist(t(moduleTraitCor)), method = "average");
+pdf(file="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/Life-stage clustering based on module-trait correlation.pdf")
+plot(moduleTraitTree, main = "Group clustering based on module-trait correlation", sub="", xlab="", cex.lab = 1.5, cex.axis = 1.5, cex.main = 2)
+dev.off()
+
+#Correlations of genes with eigengenes
+moduleGeneCor=cor(MEs,datExpr)
+moduleGenePvalue = corPvalueStudent(moduleGeneCor, nSamples)
+
+#Plot module trait correlations as a heatmap
+
+textMatrix = paste(signif(moduleTraitCor, 2), "\n(" ,signif(moduleTraitPvalue, 1), ")", sep = "")
+dim(textMatrix) = dim(moduleTraitCor)
+head(textMatrix)
+#[,1]             [,2]             [,3]             [,4]            [,5]            [,6]            [,7]            [,8]           
+#[1,] "-0.52\n(0.001)" "-0.52\n(0.001)" "-0.52\n(0.001)" "0.14\n(0.4)"   "0.13\n(0.4)"   "0.22\n(0.2)"   "0.22\n(0.2)"   "0.18\n(0.3)"  
+#[2,] "0.44\n(0.007)"  "0.56\n(4e-04)"  "0.3\n(0.08)"    "0.04\n(0.8)"   "0.033\n(0.9)"  "0.19\n(0.3)"   "-0.12\n(0.5)"  "-0.22\n(0.2)" 
+#[3,] "-0.071\n(0.7)"  "-0.27\n(0.1)"   "0.31\n(0.06)"   "-0.29\n(0.08)" "-0.33\n(0.05)" "0.67\n(7e-06)" "0.22\n(0.2)"   "-0.33\n(0.05)"
+#[4,] "0.1\n(0.6)"     "0.11\n(0.5)"    "-0.26\n(0.1)"   "-0.27\n(0.1)"  "-0.31\n(0.06)" "0.62\n(5e-05)" "0.43\n(0.01)"  "-0.076\n(0.7)"
+#[5,] "0.16\n(0.4)"    "0.13\n(0.5)"    "-0.3\n(0.07)"   "-0.25\n(0.1)"  "-0.3\n(0.07)"  "0.64\n(3e-05)" "0.28\n(0.1)"   "-0.39\n(0.02)"
+#[6,] "-0.057\n(0.7)"  "-0.0055\n(1)"   "0.012\n(0.9)"   "-0.26\n(0.1)"  "-0.3\n(0.08)"  "0.57\n(2e-04)" "-0.067\n(0.7)" "0.29\n(0.09)" 
+#[,9]            [,10]           [,11]           [,12]          
+#[1,] "0.21\n(0.2)"   "0.19\n(0.3)"   "0.14\n(0.4)"   "0.15\n(0.4)"  
+#[2,] "-0.18\n(0.3)"  "-0.35\n(0.03)" "-0.35\n(0.04)" "-0.33\n(0.05)"
+#[3,] "0.11\n(0.5)"   "-0.08\n(0.6)"  "-0.1\n(0.5)"   "0.16\n(0.3)"  
+#[4,] "-0.34\n(0.04)" "0.023\n(0.9)"  "-0.17\n(0.3)"  "0.15\n(0.4)"  
+#[5,] "0.13\n(0.4)"   "-0.1\n(0.6)"   "-0.21\n(0.2)"  "0.23\n(0.2)"  
+#[6,] "-0.23\n(0.2)"  "0.39\n(0.02)"  "-0.066\n(0.7)" "-0.28\n(0.09)"
+
+pdf(file="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/Module-trait-relationships.pdf")
+labeledHeatmap(Matrix = moduleTraitCor, xLabels = names(datTraits),  yLabels = names(MEs), ySymbols = names(MEs), 
+               cex.lab.y= 0.55, cex.lab.x= 0.55, colors = blueWhiteRed(50), textMatrix = textMatrix, setStdMargins = TRUE, cex.text = 0.25, textAdj = , 
+               zlim = c(-1,1), main = paste("Module-trait relationships"))
+labeledHeatmap(Matrix = moduleTraitCor, xLabels = names(datTraits),  yLabels = names(MEs), ySymbols = names(MEs), cex.lab.y= 0.55, 
+               cex.lab.x= 0.55, colors = blueWhiteRed(50), textMatrix = textMatrix, setStdMargins = TRUE, cex.text = 0.25, textAdj = , zlim = c(-1,1), 
+               main = paste("Module-trait relationships"))
+dev.off() 
+
+# Plot as clustered Heatmap
+#add bold sigignificant p-values, dendrogram with WGCNA MEtree cut-off, module clusters
+
+#Create list of pvalues for eigengene correlation with specific life stages
+heatmappval <- signif(moduleTraitPvalue, 1)
+
+htmap.colors <- names(MEs)
+htmap.colors <- gsub("ME", "", htmap.colors)
+
+#library(dendsort)
+row_dend = dendsort(hclust(dist(moduleTraitCor)))
+col_dend = dendsort(hclust(dist(t(moduleTraitCor))))
+
+pdf(file = "C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/Module-trait-relationship-heatmap3.pdf", height = 11.5, width = 8)
+
+ht = Heatmap(moduleTraitCor, 
+             name = "Eigengene", 
+             column_title = "Module-Trait Eigengene Correlation", 
+             col = blueWhiteRed(50), 
+             row_names_side = "left", 
+             row_dend_side = "left",
+             width = unit(4, "in"), 
+             height = unit(8.5, "in"), 
+             column_order = 1:ncol(moduleTraitCor),  # Adjusting for 12 columns
+             column_dend_reorder = FALSE, 
+             cluster_columns = hclust(dist(t(moduleTraitCor)), method = "average"), 
+             column_split = 3, 
+             column_dend_height = unit(0.5, "in"),
+             cluster_rows = METree, 
+             row_split = 10, 
+             row_gap = unit(2.5, "mm"), 
+             border = TRUE,
+             cell_fun = function(j, i, x, y, w, h, col) {
+               if(heatmappval[i, j] <= 0.05) {
+                 grid.text(sprintf("%s", heatmappval[i, j]), x, y, gp = gpar(fontsize = 8, fontface = "bold"))
+               }
+               else {
+                 grid.text(sprintf("%s", heatmappval[i, j]), x, y, gp = gpar(fontsize = 8, fontface = "plain"))
+               }},
+             column_names_gp = gpar(fontsize = 10),
+             row_names_gp = gpar(fontsize = 10, alpha = 0.75, border = TRUE, fill = htmap.colors))
+draw(ht)
+dev.off()
+
+
+# Open the PDF device to save the plot
+pdf(file = "C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/Module-trait-relationship-heatmap3.pdf", 
+    height = 11.5, width = 8)
+
+# Generate the heatmap object
+ht = Heatmap(moduleTraitCor, 
+             name = "Eigengene", 
+             column_title = "Module-Trait Eigengene Correlation", 
+             col = blueWhiteRed(50), 
+             row_names_side = "left", 
+             row_dend_side = "left",
+             width = unit(4, "in"), 
+             height = unit(8.5, "in"), 
+             column_order = 1:ncol(moduleTraitCor),  # Adjusting for 12 columns
+             column_dend_reorder = FALSE, 
+             cluster_columns = hclust(dist(t(moduleTraitCor)), method = "average"), 
+             column_split = 3, 
+             column_dend_height = unit(0.5, "in"),
+             cluster_rows = METree, 
+             row_split = 10, 
+             row_gap = unit(2.5, "mm"), 
+             border = TRUE,
+             cell_fun = function(j, i, x, y, w, h, col) {
+               if(heatmappval[i, j] <= 0.05) {
+                 grid.text(sprintf("%s", heatmappval[i, j]), x, y, gp = gpar(fontsize = 8, fontface = "bold"))
+               }
+               else {
+                 grid.text(sprintf("%s", heatmappval[i, j]), x, y, gp = gpar(fontsize = 8, fontface = "plain"))
+               }},
+             column_names_gp = gpar(fontsize = 10),
+             row_names_gp = gpar(fontsize = 10, alpha = 0.75, border = TRUE, fill = htmap.colors))
+
+# Draw the heatmap to the PDF device
+draw(ht)
+
+# Close the PDF device to save the plot
+dev.off()
