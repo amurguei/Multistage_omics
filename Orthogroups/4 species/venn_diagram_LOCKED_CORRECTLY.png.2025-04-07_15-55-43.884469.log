@@ -1,0 +1,42 @@
+INFO [2025-04-07 15:55:43] $x
+INFO [2025-04-07 15:55:43] list(Montipora_capitata = Montipora_capitata_HIv3.genes.pep_orthogroups, 
+INFO [2025-04-07 15:55:43]     Acropora_tenuis = Acropora_tenuis_0.11.maker_post_001.proteins_orthogroups, 
+INFO [2025-04-07 15:55:43]     Stylophora_pistillata = Spis.genome.annotation.pep.longest_orthogroups, 
+INFO [2025-04-07 15:55:43]     Pocillopora_acuta = Pocillopora_acuta_HIv2.genes.pep_orthogroups)
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $category.names
+INFO [2025-04-07 15:55:43] c(label_Montipora, label_Acropora, label_Stylophora, label_Pocillopora)
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $fill
+INFO [2025-04-07 15:55:43] c("#4dac26", "#b8e186", "#d01c8b", "#f1b6da")
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $cat.col
+INFO [2025-04-07 15:55:43] c("#4dac26", "#b8e186", "#d01c8b", "#f1b6da")
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $filename
+INFO [2025-04-07 15:55:43] [1] "venn_diagram_LOCKED_CORRECTLY.png"
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $output
+INFO [2025-04-07 15:55:43] [1] TRUE
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $imagetype
+INFO [2025-04-07 15:55:43] [1] "png"
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $scaled
+INFO [2025-04-07 15:55:43] [1] FALSE
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $col
+INFO [2025-04-07 15:55:43] [1] "black"
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $cat.cex
+INFO [2025-04-07 15:55:43] [1] 0.95
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $cat.dist
+INFO [2025-04-07 15:55:43] [1] 0.35
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $margin
+INFO [2025-04-07 15:55:43] [1] 0.3
+INFO [2025-04-07 15:55:43] 
+INFO [2025-04-07 15:55:43] $euler.d
+INFO [2025-04-07 15:55:43] [1] FALSE
+INFO [2025-04-07 15:55:43] 

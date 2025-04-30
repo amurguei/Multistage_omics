@@ -1,0 +1,48 @@
+INFO [2025-04-07 16:06:14] $x
+INFO [2025-04-07 16:06:14] list(Montipora_capitata = Montipora_capitata_HIv3.genes.pep_orthogroups, 
+INFO [2025-04-07 16:06:14]     Pocillopora_acuta = Pocillopora_acuta_HIv2.genes.pep_orthogroups, 
+INFO [2025-04-07 16:06:14]     Acropora_tenuis = Acropora_tenuis_0.11.maker_post_001.proteins_orthogroups, 
+INFO [2025-04-07 16:06:14]     Stylophora_pistillata = Spis.genome.annotation.pep.longest_orthogroups)
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $category.names
+INFO [2025-04-07 16:06:14] c(expression(atop(italic("Montipora capitata"), plain(16410))), 
+INFO [2025-04-07 16:06:14]     expression(atop(italic("Pocillopora acuta"), plain(15456))), 
+INFO [2025-04-07 16:06:14]     expression(atop(italic("Acropora tenuis"), plain(13324))), 
+INFO [2025-04-07 16:06:14]     expression(atop(italic("Stylophora pistillata"), plain(13666))))
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $filename
+INFO [2025-04-07 16:06:14] [1] "venn_diagram_coral_species_trial.png"
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $output
+INFO [2025-04-07 16:06:14] [1] TRUE
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $imagetype
+INFO [2025-04-07 16:06:14] [1] "png"
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $scaled
+INFO [2025-04-07 16:06:14] [1] FALSE
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $col
+INFO [2025-04-07 16:06:14] [1] "black"
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $fill
+INFO [2025-04-07 16:06:14] colors
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $cat.col
+INFO [2025-04-07 16:06:14] colors
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $cat.cex
+INFO [2025-04-07 16:06:14] [1] 0.95
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $cat.dist
+INFO [2025-04-07 16:06:14] rep(0.3, 4)
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $cat.pos
+INFO [2025-04-07 16:06:14] c(-15, 10, -15, 10)
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $margin
+INFO [2025-04-07 16:06:14] [1] 0.3
+INFO [2025-04-07 16:06:14] 
+INFO [2025-04-07 16:06:14] $euler.d
+INFO [2025-04-07 16:06:14] [1] FALSE
+INFO [2025-04-07 16:06:14] 

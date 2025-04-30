@@ -1,0 +1,49 @@
+INFO [2025-04-07 16:30:38] $x
+INFO [2025-04-07 16:30:38] list(Montipora_capitata = Montipora_capitata_HIv3.genes.pep_orthogroups, 
+INFO [2025-04-07 16:30:38]     Pocillopora_acuta = Pocillopora_acuta_HIv2.genes.pep_orthogroups, 
+INFO [2025-04-07 16:30:38]     Acropora_tenuis = Acropora_tenuis_0.11.maker_post_001.proteins_orthogroups, 
+INFO [2025-04-07 16:30:38]     Stylophora_pistillata = Spis.genome.annotation.pep.longest_orthogroups)
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $category.names
+INFO [2025-04-07 16:30:38] c(expression(atop(italic("Montipora capitata"), plain(format(16410, 
+INFO [2025-04-07 16:30:38]     big.mark = ",")))), expression(atop(italic("Pocillopora acuta"), 
+INFO [2025-04-07 16:30:38]     plain(format(15456, big.mark = ",")))), expression(atop(italic("Acropora tenuis"), 
+INFO [2025-04-07 16:30:38]     plain(format(13324, big.mark = ",")))), expression(atop(italic("Stylophora pistillata"), 
+INFO [2025-04-07 16:30:38]     plain(format(13666, big.mark = ",")))))
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $filename
+INFO [2025-04-07 16:30:38] [1] "venn_diagram_coral_species_cb_trial.png"
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $output
+INFO [2025-04-07 16:30:38] [1] TRUE
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $imagetype
+INFO [2025-04-07 16:30:38] [1] "png"
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $scaled
+INFO [2025-04-07 16:30:38] [1] FALSE
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $col
+INFO [2025-04-07 16:30:38] [1] "black"
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $fill
+INFO [2025-04-07 16:30:38] cb_palette
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $cat.col
+INFO [2025-04-07 16:30:38] cb_palette
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $cat.cex
+INFO [2025-04-07 16:30:38] [1] 0.95
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $cat.dist
+INFO [2025-04-07 16:30:38] c(0.3, 0.3, 0.35, 0.35)
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $cat.pos
+INFO [2025-04-07 16:30:38] c(-15, 10, -15, 10)
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $margin
+INFO [2025-04-07 16:30:38] [1] 0.3
+INFO [2025-04-07 16:30:38] 
+INFO [2025-04-07 16:30:38] $euler.d
+INFO [2025-04-07 16:30:38] [1] FALSE
+INFO [2025-04-07 16:30:38] 

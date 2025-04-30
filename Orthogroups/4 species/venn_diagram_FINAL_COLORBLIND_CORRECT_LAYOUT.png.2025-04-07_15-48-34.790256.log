@@ -1,0 +1,46 @@
+INFO [2025-04-07 15:48:34] $x
+INFO [2025-04-07 15:48:34] list(Montipora_capitata = Montipora_capitata_HIv3.genes.pep_orthogroups, 
+INFO [2025-04-07 15:48:34]     Acropora_tenuis = Acropora_tenuis_0.11.maker_post_001.proteins_orthogroups, 
+INFO [2025-04-07 15:48:34]     Pocillopora_acuta = Pocillopora_acuta_HIv2.genes.pep_orthogroups, 
+INFO [2025-04-07 15:48:34]     Stylophora_pistillata = Spis.genome.annotation.pep.longest_orthogroups)
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $category.names
+INFO [2025-04-07 15:48:34] c(expression(italic("Montipora capitata") * " " * .(format(length_Montipora, 
+INFO [2025-04-07 15:48:34]     big.mark = ","))), expression(italic("Acropora tenuis") * 
+INFO [2025-04-07 15:48:34]     " " * .(format(length_Acropora, big.mark = ","))), expression(italic("Pocillopora acuta") * 
+INFO [2025-04-07 15:48:34]     " " * .(format(length_Pocillopora, big.mark = ","))), expression(italic("Stylophora pistillata") * 
+INFO [2025-04-07 15:48:34]     " " * .(format(length_Stylophora, big.mark = ","))))
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $fill
+INFO [2025-04-07 15:48:34] c("#4dac26", "#b8e186", "#f1b6da", "#d01c8b")
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $cat.col
+INFO [2025-04-07 15:48:34] c("#4dac26", "#b8e186", "#f1b6da", "#d01c8b")
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $filename
+INFO [2025-04-07 15:48:34] [1] "venn_diagram_FINAL_COLORBLIND_CORRECT_LAYOUT.png"
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $output
+INFO [2025-04-07 15:48:34] [1] TRUE
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $imagetype
+INFO [2025-04-07 15:48:34] [1] "png"
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $scaled
+INFO [2025-04-07 15:48:34] [1] FALSE
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $col
+INFO [2025-04-07 15:48:34] [1] "black"
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $cat.cex
+INFO [2025-04-07 15:48:34] [1] 0.95
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $cat.dist
+INFO [2025-04-07 15:48:34] [1] 0.35
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $margin
+INFO [2025-04-07 15:48:34] [1] 0.3
+INFO [2025-04-07 15:48:34] 
+INFO [2025-04-07 15:48:34] $euler.d
+INFO [2025-04-07 15:48:34] [1] FALSE
+INFO [2025-04-07 15:48:34] 

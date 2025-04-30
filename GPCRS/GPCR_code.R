@@ -426,7 +426,7 @@ pheatmap(z_scores_ordered,
          cluster_cols = FALSE,
          color = colorRampPalette(c("navy", "white", "firebrick3"))(50),
          na_col = "gray",
-         main = "Species-normalized expression across life stages")
+         main = "Species-normalized expression across life stages by GPCR family")
 
 #Additional stuff: adding vertical labels for families
 

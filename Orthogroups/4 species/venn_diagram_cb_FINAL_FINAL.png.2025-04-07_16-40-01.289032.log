@@ -1,0 +1,45 @@
+INFO [2025-04-07 16:40:01] $x
+INFO [2025-04-07 16:40:01] list(Montipora_capitata = Montipora_capitata_HIv3.genes.pep_orthogroups, 
+INFO [2025-04-07 16:40:01]     Pocillopora_acuta = Pocillopora_acuta_HIv2.genes.pep_orthogroups, 
+INFO [2025-04-07 16:40:01]     Acropora_tenuis = Acropora_tenuis_0.11.maker_post_001.proteins_orthogroups, 
+INFO [2025-04-07 16:40:01]     Stylophora_pistillata = Spis.genome.annotation.pep.longest_orthogroups)
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $category.names
+INFO [2025-04-07 16:40:01] c(label_Montipora, label_Pocillopora, label_Acropora, label_Stylophora)
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $filename
+INFO [2025-04-07 16:40:01] [1] "venn_diagram_cb_FINAL_FINAL.png"
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $output
+INFO [2025-04-07 16:40:01] [1] TRUE
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $imagetype
+INFO [2025-04-07 16:40:01] [1] "png"
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $scaled
+INFO [2025-04-07 16:40:01] [1] FALSE
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $col
+INFO [2025-04-07 16:40:01] [1] "black"
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $fill
+INFO [2025-04-07 16:40:01] cb_palette
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $cat.col
+INFO [2025-04-07 16:40:01] cb_palette
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $cat.cex
+INFO [2025-04-07 16:40:01] [1] 0.95
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $cat.dist
+INFO [2025-04-07 16:40:01] c(0.3, 0.3, 0.35, 0.35)
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $cat.pos
+INFO [2025-04-07 16:40:01] c(-15, 10, -15, 10)
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $margin
+INFO [2025-04-07 16:40:01] [1] 0.3
+INFO [2025-04-07 16:40:01] 
+INFO [2025-04-07 16:40:01] $euler.d
+INFO [2025-04-07 16:40:01] [1] FALSE
+INFO [2025-04-07 16:40:01] 

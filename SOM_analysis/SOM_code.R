@@ -215,8 +215,8 @@ ggplot(SOM_R_summary, aes(x = Life_stage, y = mean_Z_score,
 #Now with same colour and different lines
 
 family_palette <- c(
-  "Acroporidae" = "hotpink1",
-  "Pocilloporidae" = "cyan4"
+  "Acroporidae" = "#4dac26",
+  "Pocilloporidae" = "#d01c8b"
 )
 
 

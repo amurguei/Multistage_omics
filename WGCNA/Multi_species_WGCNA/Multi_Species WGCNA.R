@@ -48,11 +48,11 @@ if ("sva" %in% rownames(installed.packages()) == 'FALSE') BiocManager::install("
 
 
 
-library(installr)
-updateR()
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install(version = "3.20")
+#library(installr)
+#updateR()
+#if (!require("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#BiocManager::install(version = "3.20")
 #Loading the packages
 
 library("tidyverse")
@@ -142,6 +142,10 @@ gcount_raw <- gcount_raw[, c(1:33, spis_larvae_cols, 37:39, spis_spat_cols)]
 #Now I'm making a dataframe and calling Orthogroup rownames
 gcount_raw <- as.data.frame(gcount_raw)
 rownames(gcount_raw) <- gcount_raw$Orthogroup  # If gene IDs are in a column
+
+# Save your gcount_raw object as a CSV
+write.csv(gcount_raw, "gcount_raw.csv", row.names = TRUE)
+
 # Extract only the count data (columns 7 to 42)
 gcount <- gcount_raw[, 7:42]
 
