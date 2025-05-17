@@ -198,3 +198,69 @@ plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="",
 dev.off()
 
 
+#Filtered data: 
+
+# Samples to remove
+remove_samples <- c("DRR318292", "DRR318296", "DRR318290")
+
+# Filter metadata
+treatmentinfo <- treatmentinfo[!treatmentinfo$sampleID %in% remove_samples, ]
+
+# Filter expression data
+gvst_filtered <- gvst[, !colnames(gvst) %in% remove_samples]
+
+# Transpose expression matrix for WGCNA and PERMANOVA
+datExpr <- as.data.frame(t(assay(gvst_filtered)))
+
+# Make sure sample names match
+treatmentinfo <- treatmentinfo[match(rownames(datExpr), treatmentinfo$sampleID), ]
+stopifnot(all(rownames(datExpr) == treatmentinfo$sampleID))
+
+#PCA with filtered data
+gPCAdata <- plotPCA(gvst_filtered, intgroup = c("timepoint"), returnData = TRUE, ntop = ncol(datExpr))
+
+
+percentVar <- round(100*attr(gPCAdata, "percentVar")) #plot PCA of samples with all data
+
+# Explicitly set the levels of the timepoint variable
+gPCAdata$timepoint <- factor(gPCAdata$timepoint, levels = c("I", "II", "III"))
+
+allgenesfilt_PCA_visual <- 
+  ggplot(data = gPCAdata, aes(PC1, PC2)) + 
+  geom_point(aes(shape = timepoint, colour = timepoint), size = 6) +  # Increase point size
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  ylim(-50, 50) +
+  coord_fixed() +
+  theme_classic() +
+  theme(
+    axis.text = element_text(size = 16),            # Increase axis text size
+    axis.title = element_text(size = 18, face = "bold"),  # Increase axis label size and make it bold
+    legend.text = element_text(size = 14),          # Increase legend text size
+    legend.title = element_text(size = 16),         # Increase legend title size
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.background = element_blank()
+  )
+
+print(allgenesfilt_PCA_visual)
+
+library(vegan)
+
+# Bray-Curtis distance matrix
+bray_dist <- vegdist(datExpr, method = "bray")
+
+# Make sure timepoint is a factor
+treatmentinfo$timepoint <- factor(treatmentinfo$timepoint, levels = c("I", "II", "III"))
+
+# Run PERMANOVA
+permanova_result <- adonis2(datExpr ~ timepoint,
+                            data = treatmentinfo,
+                            method = "bray",
+                            permutations = 9999,
+                            by = "term")
+
+print(permanova_result)
+

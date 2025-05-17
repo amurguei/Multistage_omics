@@ -24,7 +24,7 @@ if ("clusterProfiler" %in% rownames(installed.packages()) == 'FALSE') BiocManage
 
 #Sorting issues with WGCNA
 #if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
+#  install.packages("BiocManager")
 
 #BiocManager::install("impute")
 #BiocManager::install("preprocessCore")
@@ -143,7 +143,7 @@ gsg$allOK #Should return TRUE if not, the R chunk below will take care of flagge
 
 #PCA-----------------------------------------------------------------------------
 
-gPCAdata <- plotPCA(gvst, intgroup = c("timepoint"), returnData=TRUE, ntop=1000) #use ntop to specify all genes
+gPCAdata <- plotPCA(gvst, intgroup = c("timepoint"), returnData=TRUE, ntop=25741) #use ntop to specify all genes
 
 percentVar <- round(100*attr(gPCAdata, "percentVar")) #plot PCA of samples with all data
 
@@ -242,6 +242,158 @@ allgenesfilt_PCA_visual <-
 
 print(allgenesfilt_PCA_visual)
 
+#Checking the PCA loadings
+
+# 1. Get the vst-transformed data matrix
+vst_mat <- assay(gvst)  # gvst is your vst-transformed DESeq2 object
+
+# 2. Transpose the matrix so that samples are rows and genes are columns
+t_mat <- t(vst_mat)
+
+# 3. Run PCA manually
+pca_res <- prcomp(t_mat, center = TRUE, scale. = FALSE)
+
+# 4. Extract loadings (genes' contribution to PCs)
+loadings <- pca_res$rotation  # columns are PCs, rows are genes
+
+# View top contributing genes for PC1
+head(loadings[order(abs(loadings[,1]), decreasing = TRUE), ])
+
+loadings_df <- as.data.frame(loadings)
+loadings_df$gene_id <- rownames(loadings_df)
+library(dplyr)
+
+# 2. Convert gcount to a data frame and keep gene IDs
+gcount_df <- as.data.frame(gcount)
+gcount_df$gene_id <- rownames(gcount_df)
+
+# 3. Join the expression data with PCA loadings
+library(dplyr)
+joined_df <- left_join(gcount_df, loadings_df, by = "gene_id")
+
+
+# View top genes driving PC1
+top_pc1 <- joined_df %>%
+  arrange(desc(abs(PC1)))
+
+library(dplyr)
+
+# PCA loadings with gene_id column
+loadings_df <- as.data.frame(loadings)
+loadings_df$gene_id <- rownames(loadings_df)
+
+# gcount with gene_id column
+gcount_df <- as.data.frame(gcount)
+gcount_df$gene_id <- rownames(gcount_df)
+
+expr_loadings_df <- left_join(gcount_df, loadings_df, by = "gene_id")
+
+# Confirm the column name
+colnames(Montipora_capitata_HIv3_genes_EggNog_results)
+
+final_df <- left_join(expr_loadings_df,
+                      Montipora_capitata_HIv3_genes_EggNog_results,
+                      by = c("gene_id" = "#query"))
+
+top_PC1_annotated <- final_df %>%
+  arrange(desc(abs(PC1))) %>%
+  select(gene_id, PC1, PC2, everything())  # Bring PC1/PC2 up front
+
+write.csv(top_PC1_annotated, 
+          "C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/M. capitata/outputs/top_PC1_annotated.csv", 
+          row.names = FALSE)
+
+
+library(dplyr)
+
+treatmentinfo <- treatmentinfo %>%
+  mutate(spat_status = ifelse(timepoint == "III", "spat", "no_spat"))
+
+
+if (!requireNamespace("sva", quietly = TRUE)) {
+  install.packages("BiocManager")
+  BiocManager::install("sva")
+}
+library(sva)
+
+# gcount: raw count matrix (genes as rows, samples as columns)
+# Ensure column names match sample IDs
+head(colnames(gcount))        # e.g., "AH1", "AH2", ...
+head(treatmentinfo$sampleID)  # Should match exactly
+
+# Reorder metadata to match columns in gcount
+treatmentinfo_ordered <- treatmentinfo %>%
+  filter(sampleID %in% colnames(gcount)) %>%
+  arrange(match(sampleID, colnames(gcount)))
+
+# Extract batch variable
+batch <- treatmentinfo_ordered$spat_status
+
+# Make sure counts are integers
+gcount_matrix <- as.matrix(gcount)
+mode(gcount_matrix) <- "integer"
+
+combat_seq_counts <- ComBat_seq(counts = gcount_matrix, batch = batch)
+
+
+library(genefilter)
+
+combat_seq_counts_mat <- as.matrix(combat_seq_counts)
+
+library(genefilter)
+
+# Step 1: Create filtering function
+filt <- filterfun(pOverA(0.33, 10))
+
+# Step 2: Apply filter to original counts
+gfilt <- genefilter(gcount, filt)
+
+# Step 3: Keep genes that pass
+gkeep <- gcount[gfilt, ]
+gn.keep <- rownames(gkeep)  # This is your filtered gene list (n = 25741)
+
+#Subset the ComBat-Seq corrected matrix using the same filtered gene list
+combat_seq_counts_filt <- combat_seq_counts[rownames(combat_seq_counts) %in% gn.keep, ]
+
+# Total genes before filtering
+nrow(combat_seq_counts)  # Should match gcount if unfiltered ComBat-Seq was applied to all genes
+
+# After filtering
+nrow(combat_seq_counts_filt)  # Should be same as gcount[gn.keep, ]: 25741_
+#25741
+all(gn.keep %in% rownames(combat_seq_counts))        #  TRUE
+all(rownames(combat_seq_counts_filt) %in% gn.keep)   #  TRUE
+
+
+# Align sample metadata
+col_data <- treatmentinfo %>%
+  filter(sampleID %in% colnames(combat_seq_counts_filt)) %>%
+  arrange(match(sampleID, colnames(combat_seq_counts_filt))) %>%
+  column_to_rownames("sampleID")
+
+combat_seq_counts_filt <- combat_seq_counts_filt[, rownames(col_data)]
+
+# Create DESeq2 object
+gdds_combat <- DESeqDataSetFromMatrix(countData = combat_seq_counts_filt,
+                                      colData = col_data,
+                                      design = ~ timepoint)
+
+# Apply VST
+gvst_combat <- vst(gdds_combat, blind = FALSE)
+
+# PCA with timepoint as grouping
+gPCAdata <- plotPCA(gvst_combat, intgroup = "timepoint", returnData = TRUE,
+                    ntop = nrow(combat_seq_counts_filt))
+
+percentVar <- round(100 * attr(gPCAdata, "percentVar"))
+
+# Plot
+ggplot(gPCAdata, aes(PC1, PC2)) +
+  geom_point(aes(shape = timepoint, colour = timepoint), size = 5) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  coord_fixed() +
+  theme_classic()
 
 # Install vegan package if you don't have it
 install.packages("vegan")
