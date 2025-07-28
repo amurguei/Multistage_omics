@@ -55,15 +55,15 @@ library("factoextra")
 library("VennDiagram")
 library("patchwork") 
 
-setwd("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff")
+#setwd("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff")
 
 setwd("C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/M. capitata/Inputs")
 
 #Data--------------------------------------------------------------------------------------
-treatmentinfo <- read_csv("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/5-Mcap-SampleInfo.csv")
+#treatmentinfo <- read_csv("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/5-Mcap-SampleInfo.csv")
 library(readr)
 treatmentinfo <- read_csv("5-Mcap-SampleInfo.csv")
-gcount <- as.data.frame(read.csv("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/Mcap_transcript_count_matrix.csv", row.names="gene_id"), colClasses = double, header=TRUE)
+#gcount <- as.data.frame(read.csv("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/M. capitata/New_genome/fixed_gff/Mcap_transcript_count_matrix.csv", row.names="gene_id"), colClasses = double, header=TRUE)
 gcount <- as.data.frame(read.csv("Mcap_transcript_count_matrix.csv", row.names="gene_id"), colClasses = double, header=TRUE)
 
 
@@ -166,7 +166,7 @@ percentVar <- round(100*attr(gPCAdata, "percentVar")) #plot PCA of samples with 
 #ggsave("E:/Users/amurgueitio/Documents/Multistage_omics/R scripts/PCA_timepoint.png", allgenesfilt_PCA, width=11, height=8)
 
 
-#some AI modification
+#Another version
 library(ggplot2)
 
 # Check the levels of the timepoint variable
@@ -175,27 +175,6 @@ levels(gPCAdata$timepoint)
 # Explicitly set the levels of the timepoint variable
 gPCAdata$timepoint <- factor(gPCAdata$timepoint, levels = c("I", "II", "III"))
 
-# Create the PCA plot
-allgenesfilt_PCA_visual <- 
-  ggplot(data = gPCAdata, aes(PC1, PC2, shape = timepoint, colour = timepoint)) + 
-  geom_point(size = 5) +
-  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
-  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
-  scale_shape_manual(values = c("I" = 1, "II" = 2, "III" = 3)) +
-  scale_colour_manual(values = c("I" = 1, "II" = 2, "III" = 3)) +
-  ylim(-50, 50) +
-  coord_fixed() +
-  theme_classic() +
-  theme(
-    panel.border = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.line = element_line(colour = "black"),
-    plot.background = element_blank()
-  )
-
-# Print the PCA plot
-print(allgenesfilt_PCA_visual)
 
 #another attempt
 
@@ -242,6 +221,195 @@ allgenesfilt_PCA_visual <-
 
 print(allgenesfilt_PCA_visual)
 
+#Troubleshooting alignment problems
+
+# Creating an alignment rate table
+alignment_table <- tribble(
+  ~SampleID, ~SRR, ~AlignRate,
+  "AH1", "SRR14864072", 73.0,
+  "AH2", "SRR14864071", 80.8,
+  "AH3", "SRR14864070", 82.1,
+  "AH4", "SRR14864069", 79.9,
+  "AH5", "SRR14864068", 71.9,
+  "AH6", "SRR14864067", 73.0,
+  "AH7", "SRR14864066", 47.3,
+  "AH8", "SRR14864065", 65.0,
+  "AH9", "SRR14864064", 63.4
+)
+
+# Merge alignment rates into your existing sample metadata
+treatmentinfo <- treatmentinfo %>%
+  left_join(alignment_table, by = c("sampleID" = "SampleID"))
+
+colnames(treatmentinfo)
+
+gdds <- DESeqDataSetFromMatrix(countData = gcount_filt,
+                               colData = treatmentinfo,
+                               design = ~ AlignRate + timepoint)
+#the design formula contains one or more numeric variables that have mean or
+#standard deviation larger than 5 (an arbitrary threshold to trigger this message).
+#Including numeric variables with large mean can induce collinearity with the intercept.
+#Users should center and scale numeric variables in the design to improve GLM convergence.
+
+# Scale and center AlignRate (mean = 0, SD = 1)
+treatmentinfo$AlignRate_scaled <- scale(treatmentinfo$AlignRate)
+
+gdds <- DESeqDataSetFromMatrix(
+  countData = gcount_filt,
+  colData = treatmentinfo,
+  design = ~ AlignRate_scaled + timepoint
+)
+
+summary(treatmentinfo$AlignRate_scaled)
+gdds <- DESeq(gdds)  # Make sure DESeq is run before VST
+
+gvst_align <- vst(gdds, blind = FALSE)
+
+gPCAdata_align <- plotPCA(gvst_align, intgroup = c("timepoint"), returnData = TRUE, ntop = nrow(gcount_filt))
+percentVar_align <- round(100 * attr(gPCAdata_align, "percentVar"))
+
+
+library(ggplot2)
+
+ggplot(data = gPCAdata_align, aes(PC1, PC2)) +
+  geom_point(aes(shape = timepoint, colour = timepoint), size = 6) +
+  xlab(paste0("PC1: ", percentVar_align[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar_align[2], "% variance")) +
+  ylim(-50, 50) +
+  coord_fixed() +
+  theme_classic() +
+  theme(
+    axis.text = element_text(size = 16),
+    axis.title = element_text(size = 18, face = "bold"),
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 16),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    plot.background = element_blank()
+  )
+
+plot(treatmentinfo$AlignRate, gPCAdata_align$PC1, pch = 19, col = "blue",
+     xlab = "Alignment Rate", ylab = "PC1")
+abline(lm(gPCAdata_align$PC1 ~ treatmentinfo$AlignRate), col = "red")
+
+#Testing SVA
+# Get VST matrix from your original DESeq object (with just ~ timepoint)
+vst_mat <- assay(gvst)  # or gvst_original if renamed
+
+# Build model matrices
+mod <- model.matrix(~ timepoint, data = treatmentinfo)
+mod0 <- model.matrix(~ 1, data = treatmentinfo)
+
+svobj <- svaseq(vst_mat, mod, mod0)
+
+treatmentinfo$SV1 <- svobj$sv[,1]
+treatmentinfo$SV2 <- svobj$sv[,2]
+
+gdds_sva <- DESeqDataSetFromMatrix(
+  countData = gcount_filt,
+  colData = treatmentinfo,
+  design = ~ SV1 + SV2 + timepoint
+)
+
+gdds_sva <- DESeq(gdds_sva)
+gvst_sva <- vst(gdds_sva, blind = FALSE)
+
+gPCAdata_sva <- plotPCA(gvst_sva, intgroup = "timepoint", returnData = TRUE)
+percentVar_sva <- round(100 * attr(gPCAdata_sva, "percentVar"))
+
+ggplot(gPCAdata_sva, aes(PC1, PC2)) +
+  geom_point(aes(shape = timepoint, colour = timepoint), size = 6) +
+  xlab(paste0("PC1: ", percentVar_sva[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar_sva[2], "% variance")) +
+  coord_fixed() +
+  theme_classic()
+
+mod <- model.matrix(~ 1, data = treatmentinfo)
+mod0 <- model.matrix(~ 1, data = treatmentinfo)
+svobj <- svaseq(vst_mat, mod, mod0)
+
+design = ~ SV1 + SV2 + timepoint
+
+# Residualize the VST matrix
+corrected_expr <- residuals(lm(t(vst_mat) ~ svobj$sv))
+corrected_expr <- t(corrected_expr)
+
+# PCA directly on corrected expression
+pca <- prcomp(t(corrected_expr), scale. = TRUE)
+plot(pca$x[,1:2], col = treatmentinfo$timepoint)
+
+
+library(ggplot2)
+
+# Run PCA manually
+pca <- prcomp(t(corrected_expr), scale. = TRUE)
+pca_data <- as.data.frame(pca$x)
+pca_data$timepoint <- treatmentinfo$timepoint
+
+# Plot in ggplot
+ggplot(pca_data, aes(PC1, PC2, color = timepoint, shape = timepoint)) +
+  geom_point(size = 6) +
+  xlab(paste0("PC1: ", round(100 * summary(pca)$importance[2, 1]), "% variance")) +
+  ylab(paste0("PC2: ", round(100 * summary(pca)$importance[2, 2]), "% variance")) +
+  theme_classic() +
+  coord_fixed() +
+  theme(
+    axis.text = element_text(size = 16),
+    axis.title = element_text(size = 18, face = "bold"),
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 16)
+  )
+
+boxplot(AlignRate ~ timepoint, data = treatmentinfo)
+
+cor.test(treatmentinfo$SV1, treatmentinfo$AlignRate)
+#Pearson's product-moment correlation
+
+#data:  treatmentinfo$SV2 and treatmentinfo$AlignRate
+#t = -0.9782, df = 7, p-value = 0.3606
+#alternative hypothesis: true correlation is not equal to 0
+#95 percent confidence interval:
+# -0.8216693  0.4122920
+#sample estimates:
+#       cor 
+#-0.3467831 
+cor.test(treatmentinfo$SV2, treatmentinfo$AlignRate)
+
+#Correction based on TINS
+# Load TIN data
+tin_data <- read.table("multiqc_tin.txt", header = TRUE)
+
+# Rename column for clarity
+colnames(tin_data) <- c("SRR", "TIN")
+
+tin_data <- left_join(tin_data, alignment_table, by = "SRR")  # Adds SampleID column
+
+treatmentinfo <- left_join(treatmentinfo, tin_data, by = c("sampleID" = "SampleID"))
+
+treatmentinfo$TIN_scaled <- scale(treatmentinfo$TIN)
+
+gdds_tin <- DESeqDataSetFromMatrix(
+  countData = gcount_filt,
+  colData = treatmentinfo,
+  design = ~ TIN_scaled + timepoint
+)
+
+gdds_tin <- DESeq(gdds_tin)
+gvst_tin <- vst(gdds_tin, blind = FALSE)
+
+gPCAdata_tin <- plotPCA(gvst_tin, intgroup = "timepoint", returnData = TRUE, ntop=25741)
+percentVar_tin <- round(100 * attr(gPCAdata_tin, "percentVar"))
+
+ggplot(gPCAdata_tin, aes(PC1, PC2, color = timepoint, shape = timepoint)) +
+  geom_point(size = 5) +
+  xlab(paste0("PC1: ", percentVar_tin[1], "%")) +
+  ylab(paste0("PC2: ", percentVar_tin[2], "%")) +
+  theme_classic()
+
+
+
 #Checking the PCA loadings
 
 # 1. Get the vst-transformed data matrix
@@ -255,6 +423,7 @@ pca_res <- prcomp(t_mat, center = TRUE, scale. = FALSE)
 
 # 4. Extract loadings (genes' contribution to PCs)
 loadings <- pca_res$rotation  # columns are PCs, rows are genes
+
 
 # View top contributing genes for PC1
 head(loadings[order(abs(loadings[,1]), decreasing = TRUE), ])
@@ -395,7 +564,43 @@ ggplot(gPCAdata, aes(PC1, PC2)) +
   coord_fixed() +
   theme_classic()
 
-# Install vegan package if you don't have it
+tin_data <- read.table("multiqc_tin.txt", header = TRUE, sep = "\t")
+colnames(tin_data) <- c("SRR", "TIN")
+
+# Optional: map SRR IDs to sampleIDs (if needed)
+mapping <- tribble(
+  ~sampleID, ~SRR,
+  "AH1", "SRR14864072",
+  "AH2", "SRR14864071",
+  "AH3", "SRR14864070",
+  "AH4", "SRR14864069",
+  "AH5", "SRR14864068",
+  "AH6", "SRR14864067",
+  "AH7", "SRR14864066",
+  "AH8", "SRR14864065",
+  "AH9", "SRR14864064"
+)
+
+tin_data <- left_join(mapping, tin_data, by = "SRR")
+
+gPCAdata$sampleID <- rownames(gPCAdata)
+gPCAdata <- left_join(gPCAdata, tin_data, by = "sampleID")
+
+ggplot(gPCAdata, aes(PC1, PC2, color = TIN, shape = timepoint)) +
+  geom_point(size = 6) +
+  scale_color_viridis_c(option = "plasma", end = 0.95) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  coord_fixed() +
+  theme_classic() +
+  theme(
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 16, face = "bold"),
+    legend.text = element_text(size = 12),
+    legend.title = element_text(size = 14)
+  )
+
+# Install vegan package 
 install.packages("vegan")
 
 # Load necessary libraries
