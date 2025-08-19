@@ -1,0 +1,33 @@
+# 1. Request an interactive session (adjust time/cores/memory as needed)
+salloc --time=02:00:00 --cpus-per-task=16 --mem=32G
+
+# 2. Start an interactive bash shell on the compute node
+srun --pty bash
+
+# 3. Load DIAMOND module
+module load diamond/2.1.9
+
+# 4. Make DIAMOND database from Stylophora genome peptides
+diamond makedb \
+  --in Spis.genome.annotation.pep.longest.fa \
+  -d SpisGeneDB
+
+# 5. Run DIAMOND BLASTP with your SOMP query FASTA
+diamond blastp \
+  -q 'Latest_AmilRS_AdiTakeuchi_SpisPeled_SpisDrake_SpisManju_extras.FIX (5).fasta' \
+  -d SpisGeneDB \
+  -o diamond_hits_vs_Spis.tsv \
+  -f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore \
+  --more-sensitive \
+  -k 1 \
+  --threads 16
+
+#More hits
+diamond blastp \
+  -q 'Latest_AmilRS_AdiTakeuchi_SpisPeled_SpisDrake_SpisManju_extras.FIX (5).fasta' \
+  -d SpisGeneDB \
+  -o diamond_hits_vs_Spis.tsv \
+  -f 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore \
+  --more-sensitive \
+  -k 5 \
+  --threads 16

@@ -81,9 +81,8 @@ library("ggplot2")
 library("dplyr")
 library("sva")
 
-setwd("C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA")
+#setwd("C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA")
 setwd("C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/Multi_species_WGCNA")
-
 
 # Load necessary library
 library(readr)
@@ -410,7 +409,7 @@ dissTOM= 1-TOM #Calculate dissimilarity in TOM
 save(adjacency, file = "C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/adjacency_centered7sft.RData")
 save(TOM, file ="C:/Users/amurgueitio/Documents/Multistage_Omics/Multi_species_WGCNA/TOM_7sft.RData")
 save(dissTOM, file = "C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/Multi_species_WGCNA/disstomsft7_centered.RData") 
-load(file = "C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/Multi_species_WGCNA/disstomsft7.RData")
+load(file = "C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/WGCNA/Multi_species_WGCNA/disstomsft7_centered.RData")
 
 #Form distance matrix
 geneTree= flashClust(as.dist(dissTOM), method="average")
@@ -543,9 +542,8 @@ datTraits <- as.data.frame(allTraits)
 dim(datTraits)
 #[1] 36 12
 
-rownames(datTraits) <- treatmentinfo$sample_id
+rownames(datTraits) <- treatmentinfo$sampleID
 print(datTraits)
-#This is creating an issue
 
 #Define numbers of genes and samples
 nGenes = ncol(datExpr1_centered)
@@ -635,7 +633,7 @@ datTraits_mod <- data.frame(
 )
 
 # Step 2: Assign row names from your metadata
-rownames(datTraits_mod) <- treatmentinfo$sample_id  # or treatmentinfo$new_names if renamed
+rownames(datTraits_mod) <- treatmentinfo$sampleID
 
 # Step 3: Compute module eigengenes and correlations
 nSamples <- nrow(datExpr1_centered)
@@ -761,6 +759,121 @@ ht = Heatmap(
 )
 
 draw(ht)
+dev.off()
+
+#Some modifications 
+
+# Replace column labels
+pretty_labels <- gsub("Larvae", "Stage I", pretty_labels)
+pretty_labels <- gsub("Meta", "Stage II", pretty_labels)
+pretty_labels <- gsub("Spat", "Stage III", pretty_labels)
+
+# PNG output with publication resolution (300 DPI)
+png(
+  filename = "module_trait_heatmap_cleaned.png",
+  width = 2400,   # 8 inches * 300 dpi
+  height = 3450,  # 11.5 inches * 300 dpi
+  res = 300
+)
+
+ht = Heatmap(
+  moduleTraitCor,
+  name = "Eigengene",
+  column_title = "Module–Life Stage Eigengene Correlation",
+  col = blueWhiteRed(50),
+  row_names_side = "left",
+  row_dend_side = "left",
+  width = unit(4, "in"),
+  height = unit(8.5, "in"),
+  column_order = 1:ncol(moduleTraitCor),
+  cluster_columns = FALSE,
+  column_labels = pretty_labels,
+  column_names_rot = 45,
+  column_names_gp = gpar(fontsize = 12),
+  cluster_rows = METree,
+  row_split = 10,
+  row_gap = unit(2.5, "mm"),
+  border = TRUE,
+  row_names_gp = gpar(fontsize = 11, alpha = 0.75, border = TRUE, fill = htmap.colors),
+  cell_fun = function(j, i, x, y, w, h, col) {
+    grid.text(
+      sprintf("%s", heatmappval[i, j]),
+      x, y,
+      gp = gpar(fontsize = 8, fontface = ifelse(heatmappval[i, j] <= 0.05, "bold", "plain"))
+    )
+  }
+)
+
+grid.newpage()  # <--- ensures the heatmap is drawn on a fresh graphics page
+draw(ht)
+
+dev.off()
+
+#Some mods 
+library(ComplexHeatmap)
+library(grid)
+library(gridExtra)
+
+# Set output PNG (8in x 11.5in @ 300 DPI)
+png(
+  filename = "module_trait_heatmap_cleaned_fixed.png",
+  width = 2400,  # 8 inches * 300 dpi
+  height = 3450, # 11.5 inches * 300 dpi
+  res = 300
+)
+
+# Start fresh graphics page
+grid.newpage()
+
+# Define pretty column labels as parsed expressions
+pretty_labels <- c(
+  expression("Stage I / "*italic("A. tenuis")),
+  expression("Stage I / "*italic("M. capitata")),
+  expression("Stage I / "*italic("P. acuta")),
+  expression("Stage I / "*italic("S. pistillata")),
+  expression("Stage II / "*italic("A. tenuis")),
+  expression("Stage II / "*italic("M. capitata")),
+  expression("Stage II / "*italic("P. acuta")),
+  expression("Stage II / "*italic("S. pistillata")),
+  expression("Stage III / "*italic("A. tenuis")),
+  expression("Stage III / "*italic("M. capitata")),
+  expression("Stage III / "*italic("P. acuta")),
+  expression("Stage III / "*italic("S. pistillata"))
+)
+
+# Build the heatmap
+ht <- Heatmap(
+  moduleTraitCor,
+  name = "Eigengene",
+  column_title = "Module–Life Stage Eigengene Correlation",
+  col = blueWhiteRed(50),
+  row_names_side = "left",
+  row_dend_side = "left",
+  width = unit(4, "in"),
+  height = unit(8.5, "in"),
+  column_order = 1:ncol(moduleTraitCor),
+  cluster_columns = FALSE,
+  column_labels = pretty_labels,
+  column_names_rot = 45,
+  column_names_gp = gpar(fontsize = 12),
+  cluster_rows = METree,
+  row_split = 8,
+  row_gap = unit(2.5, "mm"),
+  border = TRUE,
+  row_names_gp = gpar(fontsize = 11, alpha = 0.75, border = TRUE, fill = htmap.colors),
+  cell_fun = function(j, i, x, y, w, h, col) {
+    grid.text(
+      sprintf("%s", heatmappval[i, j]),
+      x, y,
+      gp = gpar(fontsize = 8, fontface = ifelse(heatmappval[i, j] <= 0.05, "bold", "plain"))
+    )
+  }
+)
+
+# Draw the heatmap
+draw(ht)
+
+# Close the device
 dev.off()
 
 #By Life-stage - species groups
@@ -991,7 +1104,6 @@ chooseTopHubInEachModule(
   type = "signed")
 
 head(moduleCluster) 
-head(moduleCluster) 
 #"moduleColor moduleCluster
 #1   steelblue             1
 #2   turquoise             2
@@ -1148,6 +1260,7 @@ for (i in 1:8) {
 
 # Step 3: Combine and export
 combined_plot <- wrap_plots(plots, ncol = 2)
+plot(combined_plot)
 
 ggsave(
   filename = "expression_eigengene_profiles_species_lifestage_ordered.png",

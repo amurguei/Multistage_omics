@@ -1,0 +1,10 @@
+"Contrast","n_DEGs","n_GO_terms"
+"I_vs_II",249,22
+"II_vs_I",249,22
+"I_vs_III",12165,700
+"III_vs_I",12165,700
+"II_vs_III",12512,383
+"III_vs_II",12512,383
+"I_vs_others",9418,313
+"II_vs_others",8963,587
+"III_vs_others",8963,587

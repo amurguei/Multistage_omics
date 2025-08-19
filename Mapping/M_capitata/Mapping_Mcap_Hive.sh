@@ -456,40 +456,39 @@ python /lustre1/home/mass/amalia/.conda/envs/Mcap/bin/prepDE.py \
   /lustre1/home/mass/amalia/montipora_mapping/data/bam_files/*.bam
 
   #Additional: 
-  #Getting TINS, had to be made from another conda environment since the other one had an older version of Python causing issues. 
-
-  # [1] Create a fresh conda environment for RSeQC
-conda deactivate
+# [1] Set up a clean RSeQC environment
 conda create -n rseqc_env python=3.9 -y
 conda activate rseqc_env
 
-# [2] Install required tools
-conda install -c bioconda -c conda-forge rseqc bedops
+# [2] Install dependencies (if not already installed)
+conda install -c bioconda rseqc ucsc-gtfToGenePred ucsc-genePredToBed
 
-# [3] Convert GTF to BED (for TIN input)
+# [3] Convert GTF to BED12 format (required for TIN)
 cd /lustre1/home/mass/amalia/montipora_mapping/ref
-gtf2bed < Montipora_capitata_HIv3.gtf > Mcap_transcripts.bed
 
-# [4] Run TIN calculation for all BAM files
+gtfToGenePred Montipora_capitata_HIv3.gtf Mcap.genePred
+genePredToBed Mcap.genePred Mcap_transcripts_clean.bed
+
+# Optional: verify BED format (should be 12 fields)
+awk '{ print NF }' Mcap_transcripts_clean.bed | sort | uniq -c
+
+# [4] Run TIN calculation using RSeQC
 mkdir -p /lustre1/home/mass/amalia/montipora_mapping/outputs/tin
 cd /lustre1/home/mass/amalia/montipora_mapping/data/bam_files
 
 for bam in *.bam; do
-    echo "Running TIN for $bam"
-    tin.py -i "$bam" -r /lustre1/home/mass/amalia/montipora_mapping/ref/Mcap_transcripts.bed \
-        > /lustre1/home/mass/amalia/montipora_mapping/outputs/tin/${bam%.bam}_tin.txt
+  echo "Running TIN for $bam"
+  tin.py -i "$bam" \
+         -r /lustre1/home/mass/amalia/montipora_mapping/ref/Mcap_transcripts_clean.bed \
+         > /lustre1/home/mass/amalia/montipora_mapping/outputs/tin/${bam%.bam}.tin.xls
 done
 
-# [5] Switch to the conda env that has MultiQC (Mcap)
-conda deactivate
-conda activate Mcap
+# [5] Compute average TIN score per sample
+cd /lustre1/home/mass/amalia/montipora_mapping/outputs/tin
 
-# [6] Run MultiQC on both TIN outputs and HISAT2 logs
-multiqc \
-  /lustre1/home/mass/amalia/montipora_mapping/outputs/tin \
-  /lustre1/home/mass/amalia/montipora_mapping/data/bam_files \
-  -o /lustre1/home/mass/amalia/montipora_mapping/outputs/multiqc_tin_hisat
-
-# [7] Rename output HTML for clarity
-mv /lustre1/home/mass/amalia/montipora_mapping/outputs/multiqc_tin_hisat/multiqc_report.html \
-   /lustre1/home/mass/amalia/montipora_mapping/outputs/multiqc_tin_hisat/MultiQC_TIN_HISAT.html
+echo -e "Sample\tTIN" > multiqc_tin.txt
+for f in *.tin.xls; do
+  sample=$(basename "$f" .tin.xls)
+  tin=$(awk 'NR>1 && $5 > 0 {sum += $5; n++} END {if (n > 0) printf "%.4f", sum/n; else print "0"}' "$f")
+  echo -e "${sample}\t${tin}" >> multiqc_tin.txt
+done

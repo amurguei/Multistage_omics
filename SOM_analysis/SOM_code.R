@@ -1,5 +1,10 @@
 library(readr)
-SOM_R <- read_csv("GitHub/Multistage_omics/SOM_analysis/SOM_R_dataset.csv")
+setwd("C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/SOM_analysis")
+
+file.exists("C:/Users/amurg/OneDrive/Documentos/GitHub/Multistage_omics/SOM_analysis")
+
+SOM_R <- read_csv("SOM_R_dataset.csv")
+
 
 # Calculate Z-scores and store them in a new column 'Z_scores'
 library(dplyr)
@@ -241,4 +246,87 @@ ggplot(SOM_R_summary, aes(x = Life_stage, y = mean_Z_score,
   scale_linetype_manual(values = species_linetypes)  # Apply species linetypes
 
 
+
+# Subset for selected proteins
+subset_proteins <- c("MAM and LDL-receptor class A domain-containing 1", 
+                     "CARP2", "Cadherin", "Vitellogenin")
+
+SOM_R_subset <- SOM_R_summary %>% 
+  dplyr::filter(Protein %in% subset_proteins)
+
+# Plot with vertical facets
+ggplot(SOM_R_subset, aes(x = Life_stage, y = mean_Z_score, 
+                         color = Family, group = interaction(Species, Gene))) +
+  geom_line(size = 1, aes(linetype = Species)) +
+  geom_point(size = 2) +  
+  facet_wrap(~ Protein, scales = "free_y", ncol = 1) +  # Vertical facets
+  theme_minimal() +
+  labs(title = "Mean Z-scores Across Life Stages by Selected SOM Proteins",
+       x = "Life Stage", 
+       y = "Mean Z-score") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_color_manual(values = family_palette) +
+  scale_linetype_manual(values = species_linetypes)
+
+
+
+
+library(dplyr)
+library(ggplot2)
+
+# Define visual styles
+family_palette <- c(
+  "Acroporidae" = "#4dac26",
+  "Pocilloporidae" = "#d01c8b"
+)
+
+species_linetypes <- c(
+  "Montipora_capitata" = "solid",
+  "Acropora_tenuis" = "dashed",
+  "Pocillopora_acuta" = "dotted",
+  "Stylophora_pistillata" = "dotdash"
+)
+
+# Define target proteins
+subset_proteins <- c(
+  "MAM and LDL-receptor class A domain-containing 1", 
+  "CARP2", 
+  "Vitellogenin",
+  "Cadherin"
+)
+
+#Creating subset
+SOM_R_subset <- SOM_R_summary %>%
+  filter(Protein %in% subset_proteins) %>%
+  mutate(
+    Protein = factor(Protein, levels = subset_proteins),  # set facet order
+    Life_stage = recode(
+      Life_stage,
+      "Larvae" = "Stage I",
+      "Metamorphosed" = "Stage II",
+      "Spat" = "Stage III"
+    ),
+    Life_stage = factor(Life_stage, levels = c("Stage I", "Stage II", "Stage III"))
+  )
+
+
+# Plot
+plot <- ggplot(SOM_R_subset, aes(x = Life_stage, y = mean_Z_score, 
+                                 color = Family, group = interaction(Species, Gene))) +
+  geom_line(size = 1, aes(linetype = Species)) +
+  geom_point(size = 2) +  
+  facet_wrap(~ Protein, scales = "free_y", ncol = 1) +  # Vertical facets
+  theme_minimal() +
+  labs(title = "Mean Z-scores Across Life Stages for Selected SOM Proteins",
+       x = "Life Stage", 
+       y = "Mean Z-score") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_color_manual(values = family_palette) +
+  scale_linetype_manual(values = species_linetypes)
+
+# Display
+print(plot)
+
+# Save to PNG
+ggsave("SOM_subset_staged.png", plot, width = 6, height = 10, dpi = 300)
 
